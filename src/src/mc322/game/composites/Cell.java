@@ -30,6 +30,10 @@ public class Cell extends StaticEntity {
 		this.solida = solida;
 	}
 	
+	public boolean isSolid() {
+		return this.solida;
+	}
+	
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -51,7 +55,15 @@ public class Cell extends StaticEntity {
 	
 	@Override
 	public void addEntity(Entity ent) {
+//		System.out.println("Antes: ");
+//		for (Entity enti : entitys) {
+//			System.out.println(enti);
+//		}
 		entitys.add(ent);
+//		System.out.println("Depois: ");
+//		for (Entity enti : entitys) {
+//			System.out.println(enti);
+//		}
 		ent.setCallback(this);
 	}
 
@@ -73,11 +85,13 @@ public class Cell extends StaticEntity {
 	public void update(KeyManager key) {
 		for (Entity ent : entitys) {
 			ent.update(key);
-//			System.out.println(ent.getPosition()[0] + " " + ent.getPosition()[1]);
 		}
 		
-		if (!removeStack.empty())
+		if (!removeStack.empty()) {
 			for (Entity ent : removeStack)
 				removeEntity(ent);
+			removeStack.clear();
+		}
+			
 	}
 }

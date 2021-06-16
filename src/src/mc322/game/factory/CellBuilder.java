@@ -11,7 +11,7 @@ public class CellBuilder {
 	private static String defaultTile = "piso2";
 	
 	public Entity buildCell(Assets gameAssets, int id) {
-		Entity cell = new Cell();
+		Cell cell = new Cell();
 		String name = gameAssets.getName(id);
 		// Deve verificar se eh solida
 		switch (name) {
@@ -19,14 +19,17 @@ public class CellBuilder {
 				Entity jogador = new Hacker(gameAssets.getSprite(name));
 				cell.addEntity(jogador);
 				cell.setTexture(gameAssets.getSprite(defaultTile));
+				cell.setSolida(false);
 				break;
 			case "bug":
 				Entity bug = new Bug(gameAssets.getSprite(name));
 				cell.addEntity(bug);
 				cell.setTexture(gameAssets.getSprite(defaultTile));
+				cell.setSolida(false);
 				break;
 			default:
 				cell.setTexture(gameAssets.getSprite(name));
+				cell.setSolida(gameAssets.getSprite(name).isSolid());
 				break;
 		}
 		return cell;

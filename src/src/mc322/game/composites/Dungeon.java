@@ -1,12 +1,19 @@
 package mc322.game.composites;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import mc322.game.input.KeyManager;
+import mc322.game.util.Node;
 
 public class Dungeon extends StaticEntity {
 	private int i, j;
 	private Entity[][] tiles;
+	private Entity jogador;
+	private boolean turno;
 	
 	public Dungeon () {
 		tiles = null;
@@ -31,6 +38,13 @@ public class Dungeon extends StaticEntity {
 	public void moveEntity(Entity ent, int[] target) {
 		tiles[target[1]][target[0]].addEntity(ent);
 		ent.setPosition(target[0], target[1]);
+	}
+	
+	public boolean isValidPosition(int a, int b) {
+		if ((a >= 0 && a < this.x) && (b >= 0 && b < this.y)) {
+			return true;
+		}
+		return false;
 	}
 	
 	@Override

@@ -36,7 +36,7 @@ public class Hacker extends DynamicEntity {
 	@Override
 	public void update(KeyManager key) {
 		try {
-			System.out.println("X: " + x + " Y: " + y);
+			// System.out.println("X: " + x + " Y: " + y);
 			int chave = key.nextKey();
 			if (chave == 'w')
 				move(x, y - 1);
@@ -57,7 +57,6 @@ public class Hacker extends DynamicEntity {
 	protected void move(int x, int y) {
 		try {
 			Cell fatherCell = (Cell) father;
-			System.out.println("Attempting movement to " + x + " " + y);
 			fatherCell.moveEntity(this, new int[] {x, y});
 		} catch(Exception e){
 			System.out.println("Failed To Move");

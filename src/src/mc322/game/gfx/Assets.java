@@ -33,6 +33,7 @@ public class Assets {
 		String[] line;
 		String name;
 		int sizeX, sizeY, x, y, id;
+		boolean solid;
 		
 		while(spriteMap.hasNextLine()) {
 			
@@ -44,6 +45,7 @@ public class Assets {
 			x = Integer.parseInt(line[3]);
 			y = Integer.parseInt(line[4]);
 			id = Integer.parseInt(line[5]);
+			solid = Boolean.parseBoolean(line[6]);
 			
 			sprite = new Sprite();
 			sprite.setName(name);
@@ -51,6 +53,7 @@ public class Assets {
 			sprite.setSizeX(32);
 			sprite.setSizeY(32); // REVER
 			sprite.setId(id);
+			sprite.setSolid(solid);
 			
 			add(sprite);
 			System.out.println("Loading Sprite - " + name + " id: " + id);

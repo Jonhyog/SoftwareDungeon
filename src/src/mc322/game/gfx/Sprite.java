@@ -6,6 +6,7 @@ public class Sprite {
 	private String name;
 	private BufferedImage texture;
 	private int id, sizeX, sizeY;
+	private boolean solid;
 	
 	public Sprite() {
 		this.texture = null;
@@ -51,5 +52,13 @@ public class Sprite {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public void setSolid(boolean solid) {
+		this.solid = solid;
+	}
+	
+	public boolean isSolid() {
+		return this.solid;
 	}
 }

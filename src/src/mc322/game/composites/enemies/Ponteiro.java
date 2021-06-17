@@ -1,16 +1,15 @@
 package mc322.game.composites.enemies;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
-import mc322.game.composites.DynamicEntity;
 import mc322.game.composites.Entity;
 import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
 
-public class Ponteiro extends DynamicEntity {
+public class Ponteiro extends Enemy {
 	
 	public Ponteiro(Sprite texture) {
+		super();
 		this.texture = texture;
 		this.life = 10;
 		this.attack = 2;
@@ -41,7 +40,7 @@ public class Ponteiro extends DynamicEntity {
 	}
 
 	@Override
-	protected void move(int x, int y) {
+	public void move(int x, int y) {
 		// TODO Auto-generated method stub
 		
 	}

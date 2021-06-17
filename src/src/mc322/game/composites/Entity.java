@@ -10,8 +10,10 @@ public interface Entity {
 	public void removeEntity(Entity ent);
 	public void setPosition(int x, int y);
 	public void setTexture(Sprite sprite);
+	public void setSolida(boolean solid);
 	public void setCallback(Entity father);
 	public int[] getPosition();
+	public boolean isSolid();
 	public void render(Graphics2D g);
 	public void update(KeyManager key);
 }

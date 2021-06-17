@@ -20,20 +20,20 @@ public class KeyManager implements KeyListener {
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
-		System.out.println("Adicionando ao Buffer: " + e.getKeyChar());
+		// System.out.println("Adicionando ao Buffer: " + e.getKeyChar());
 		keyQueue.add(e.getKeyChar());
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		keys[e.getKeyCode()] = true;
-		System.out.println("Pressionou: " + e.getKeyChar());
+		// System.out.println("Pressionou: " + e.getKeyChar());
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		keys[e.getKeyCode()] = false;
-		System.out.println("Soltou: " + e.getKeyChar());
+		// System.out.println("Soltou: " + e.getKeyChar());
 	}
 
 }

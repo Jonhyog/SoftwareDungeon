@@ -7,6 +7,8 @@ import mc322.game.input.KeyManager;
 public class Dungeon extends StaticEntity {
 	private int i, j;
 	private Entity[][] tiles;
+	private Entity jogador;
+	private boolean turno;
 	
 	public Dungeon () {
 		tiles = null;
@@ -28,9 +30,20 @@ public class Dungeon extends StaticEntity {
 		return tiles != null ? tiles[y][x] : null;
 	}
 	
-	public void moveEntity(Entity ent, int[] target) {
+	public void moveEntity(Entity ent, int[] target) throws Exception {
+		if (tiles[target[1]][target[0]].isSolid()) {
+			System.out.println("Nao posso mover para um cell solida");
+			throw new Exception();
+		}
 		tiles[target[1]][target[0]].addEntity(ent);
 		ent.setPosition(target[0], target[1]);
+	}
+	
+	public boolean isValidPosition(int a, int b) {
+		if ((a >= 0 && a < this.x) && (b >= 0 && b < this.y)) {
+			return true;
+		}
+		return false;
 	}
 	
 	@Override

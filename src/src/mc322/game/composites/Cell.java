@@ -1,16 +1,13 @@
 package mc322.game.composites;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Queue;
 import java.util.Stack;
 
 import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
 
 public class Cell extends StaticEntity {
-	private boolean solida;
 	private ArrayList<Entity> entitys;
 	private Stack<Entity> removeStack;
 	
@@ -23,11 +20,7 @@ public class Cell extends StaticEntity {
 		this.entitys = new ArrayList<Entity>();
 		this.removeStack = new Stack<Entity>();
 		this.texture = texture;
-		this.solida = solida;
-	}
-	
-	public void setSolida(boolean solida) {
-		this.solida = solida;
+		setSolida(solida);
 	}
 	
 	public void setPosition(int x, int y) {
@@ -38,20 +31,27 @@ public class Cell extends StaticEntity {
 		}
 	}
 	
-	public void moveEntity(Entity ent, int[] target) {
+	public void moveEntity(Entity ent, int[] target) throws Exception {
 		try {
 			Dungeon fatherDungeon = (Dungeon) father;
 			fatherDungeon.moveEntity(ent, target);
 		} catch(Exception e){
-			System.out.println("Failed To Move 2");
-			return;
+			throw new Exception();
 		}
 		removeStack.add(ent); // Remocao nao pode ocorrer durante iteracao 
 	}
 	
 	@Override
 	public void addEntity(Entity ent) {
+//		System.out.println("Antes: ");
+//		for (Entity enti : entitys) {
+//			System.out.println(enti);
+//		}
 		entitys.add(ent);
+//		System.out.println("Depois: ");
+//		for (Entity enti : entitys) {
+//			System.out.println(enti);
+//		}
 		ent.setCallback(this);
 	}
 
@@ -73,11 +73,13 @@ public class Cell extends StaticEntity {
 	public void update(KeyManager key) {
 		for (Entity ent : entitys) {
 			ent.update(key);
-//			System.out.println(ent.getPosition()[0] + " " + ent.getPosition()[1]);
 		}
 		
-		if (!removeStack.empty())
+		if (!removeStack.empty()) {
 			for (Entity ent : removeStack)
 				removeEntity(ent);
+			removeStack.clear();
+		}
+			
 	}
 }

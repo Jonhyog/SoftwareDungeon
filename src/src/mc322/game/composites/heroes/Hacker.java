@@ -9,6 +9,7 @@ import mc322.game.composites.DynamicEntity;
 import mc322.game.composites.Entity;
 import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
+import mc322.game.composites.Movement;
 
 public class Hacker extends DynamicEntity {
 	public Hacker(Sprite sprite) {
@@ -38,14 +39,7 @@ public class Hacker extends DynamicEntity {
 		try {
 			// System.out.println("X: " + x + " Y: " + y);
 			int chave = key.nextKey();
-			if (chave == 'w')
-				move(x, y - 1);
-			if (chave == 's')
-				move(x, y + 1);
-			if (chave == 'a')
-				move(x - 1, y);
-			if (chave == 'd')
-				move(x + 1, y);
+			movement(chave, this.Hacker);
 		} catch (NoSuchElementException e) {
 			// NAO HA NECESSIDADE DE ATUALIZAR SE
 			// NAO HOUVE INPUT

@@ -1,13 +1,8 @@
 package mc322.game.composites;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import mc322.game.input.KeyManager;
-import mc322.game.util.Node;
 
 public class Dungeon extends StaticEntity {
 	private int i, j;
@@ -35,7 +30,11 @@ public class Dungeon extends StaticEntity {
 		return tiles != null ? tiles[y][x] : null;
 	}
 	
-	public void moveEntity(Entity ent, int[] target) {
+	public void moveEntity(Entity ent, int[] target) throws Exception {
+		if (tiles[target[1]][target[0]].isSolid()) {
+			System.out.println("Nao posso mover para um cell solida");
+			throw new Exception();
+		}
 		tiles[target[1]][target[0]].addEntity(ent);
 		ent.setPosition(target[0], target[1]);
 	}

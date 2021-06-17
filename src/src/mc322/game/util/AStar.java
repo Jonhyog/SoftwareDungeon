@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.PriorityQueue;
 
-import mc322.game.composites.Cell;
 import mc322.game.composites.Dungeon;
+import mc322.game.composites.Entity;
 
 public class AStar {
 	private int normaTaxista(int[] a, int[] b) {
@@ -106,7 +106,7 @@ public class AStar {
 			for (Node vizinho : vizinhos) {
 				pos = vizinho.getPosition();
 				
-				Cell celula = (Cell) dg.getTile(pos[0], pos[1]); // FIX-ME
+				Entity celula = dg.getTile(pos[0], pos[1]); // FIX-ME
 				if (visitados[pos[1]][pos[0]] || celula.isSolid())
 					continue;
 				

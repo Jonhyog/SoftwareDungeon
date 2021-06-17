@@ -1,18 +1,16 @@
 package mc322.game.composites.heroes;
 
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
 import java.util.NoSuchElementException;
 
 import mc322.game.composites.Cell;
-import mc322.game.composites.DynamicEntity;
 import mc322.game.composites.Entity;
 import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
-import mc322.game.composites.Movement;
 
-public class Hacker extends DynamicEntity {
+public class Hacker extends Hero {
 	public Hacker(Sprite sprite) {
+		super();
 		this.texture = sprite;
 		this.life = 10;
 		this.attack = 2;
@@ -39,7 +37,7 @@ public class Hacker extends DynamicEntity {
 		try {
 			// System.out.println("X: " + x + " Y: " + y);
 			int chave = key.nextKey();
-			movement(chave, this.Hacker);
+			heroMovement.move(chave, this);
 		} catch (NoSuchElementException e) {
 			// NAO HA NECESSIDADE DE ATUALIZAR SE
 			// NAO HOUVE INPUT
@@ -48,7 +46,7 @@ public class Hacker extends DynamicEntity {
 	}
 
 	@Override
-	protected void move(int x, int y) {
+	public void move(int x, int y) {
 		try {
 			Cell fatherCell = (Cell) father;
 			fatherCell.moveEntity(this, new int[] {x, y});

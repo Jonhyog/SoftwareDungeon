@@ -2,7 +2,6 @@ package mc322.game.factory;
 
 import java.util.Scanner;
 
-import mc322.game.composites.Cell;
 import mc322.game.composites.Entity;
 import mc322.game.gfx.Assets;
 import mc322.game.util.loaders.DungeonLoader;

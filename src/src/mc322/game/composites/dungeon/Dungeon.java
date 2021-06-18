@@ -1,7 +1,12 @@
-package mc322.game.composites;
+package mc322.game.composites.dungeon;
 
 import java.awt.Graphics2D;
 
+import mc322.game.composites.Entity;
+import mc322.game.composites.StaticEntity;
+import mc322.game.composites.dungeon.exceptions.DungeonException;
+import mc322.game.composites.dungeon.exceptions.InvalidMovement;
+import mc322.game.composites.dungeon.exceptions.InvalidPosition;
 import mc322.game.input.KeyManager;
 
 public class Dungeon extends StaticEntity {
@@ -26,16 +31,20 @@ public class Dungeon extends StaticEntity {
 		return new int[] {x, y};
 	}
 	
-	public Entity getTile(int x, int y) {
+	public Entity getTile(int x, int y) throws DungeonException {
+		if (!isValidPosition(x, y))
+			throw new InvalidPosition("Posicao (" + x + ", " + y + ") eh invalida");
+		
 		return tiles != null ? tiles[y][x] : null;
 	}
 	
-	public void moveEntity(Entity ent, int[] target) throws Exception {
-		if (tiles[target[1]][target[0]].isSolid()) {
-			System.out.println("Nao posso mover para um cell solida");
-			throw new Exception();
-		}
-		tiles[target[1]][target[0]].addEntity(ent);
+	public void moveEntity(Entity ent, int[] target) throws DungeonException {
+		Entity tile = getTile(target[0], target[1]);
+		
+		if (tile.isSolid())
+			throw new InvalidMovement("Movimento para tile solido nao eh valido");
+		
+		tile.addEntity(ent);
 		ent.setPosition(target[0], target[1]);
 	}
 	

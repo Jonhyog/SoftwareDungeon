@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.PriorityQueue;
 
-import mc322.game.composites.Dungeon;
 import mc322.game.composites.Entity;
+import mc322.game.composites.dungeon.Dungeon;
 
 public class AStar {
 	private int normaTaxista(int[] a, int[] b) {

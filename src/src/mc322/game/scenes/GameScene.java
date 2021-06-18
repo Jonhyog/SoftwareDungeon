@@ -8,10 +8,11 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import mc322.game.composites.Dungeon;
+import mc322.game.composites.dungeon.Dungeon;
 import mc322.game.factory.DungeonBuilder;
 import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
+import mc322.game.scenes.SceneManager.SceneManager;
 import mc322.game.util.AStar;
 
 public class GameScene extends JPanel implements Scene {

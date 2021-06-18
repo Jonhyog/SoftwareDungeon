@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import mc322.game.composites.dungeon.Dungeon;
 import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
 
@@ -31,13 +32,9 @@ public class Cell extends StaticEntity {
 		}
 	}
 	
-	public void moveEntity(Entity ent, int[] target) throws Exception {
-		try {
-			Dungeon fatherDungeon = (Dungeon) father;
-			fatherDungeon.moveEntity(ent, target);
-		} catch(Exception e){
-			throw new Exception();
-		}
+	public void moveEntity(Entity ent, int[] target){
+		Dungeon fatherDungeon = (Dungeon) father;
+		fatherDungeon.moveEntity(ent, target);
 		removeStack.add(ent); // Remocao nao pode ocorrer durante iteracao 
 	}
 	

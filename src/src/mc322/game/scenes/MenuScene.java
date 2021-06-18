@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
-import mc322.game.scenes.SceneManager.SceneManager;
+import mc322.game.scenes.sceneManager.SceneManager;
 
 public class MenuScene extends JPanel implements Scene, ActionListener{
 	private static final long serialVersionUID = 7046553700240868429L;

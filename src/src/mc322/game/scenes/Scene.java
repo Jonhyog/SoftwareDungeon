@@ -2,7 +2,7 @@ package mc322.game.scenes;
 
 import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
-import mc322.game.scenes.SceneManager.SceneManager;
+import mc322.game.scenes.sceneManager.SceneManager;
 
 public interface Scene {
 	public void setCallback(SceneManager sceneMan);

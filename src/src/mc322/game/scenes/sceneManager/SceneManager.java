@@ -1,4 +1,4 @@
-package mc322.game.scenes.SceneManager;
+package mc322.game.scenes.sceneManager;
 
 import java.awt.Component;
 import java.util.Hashtable;
@@ -6,8 +6,8 @@ import java.util.Hashtable;
 import mc322.game.displays.GameWindow;
 import mc322.game.input.KeyManager;
 import mc322.game.scenes.Scene;
-import mc322.game.scenes.SceneManager.exceptions.SceneManagerException;
-import mc322.game.scenes.SceneManager.exceptions.SceneNotFound;
+import mc322.game.scenes.sceneManager.exceptions.SceneManagerException;
+import mc322.game.scenes.sceneManager.exceptions.SceneNotFound;
 
 public class SceneManager {
 	private Scene currentScene;

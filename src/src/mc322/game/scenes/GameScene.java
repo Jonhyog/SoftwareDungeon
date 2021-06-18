@@ -12,7 +12,7 @@ import mc322.game.composites.dungeon.Dungeon;
 import mc322.game.factory.DungeonBuilder;
 import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
-import mc322.game.scenes.SceneManager.SceneManager;
+import mc322.game.scenes.sceneManager.SceneManager;
 import mc322.game.util.AStar;
 
 public class GameScene extends JPanel implements Scene {

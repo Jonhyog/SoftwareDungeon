@@ -11,7 +11,7 @@ import mc322.game.scenes.GameScene;
 // import mc322.game.input.MouseManager;
 import mc322.game.scenes.MenuScene;
 import mc322.game.scenes.Scene;
-import mc322.game.scenes.SceneManager;
+import mc322.game.scenes.sceneManager.SceneManager;
 import mc322.game.util.Clock;
 
 public class Game {

@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 import mc322.game.composites.Cell;
 import mc322.game.composites.Entity;
+import mc322.game.composites.dungeon.exceptions.DungeonException;
 import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
 
@@ -50,8 +51,8 @@ public class Hacker extends Hero {
 		try {
 			Cell fatherCell = (Cell) father;
 			fatherCell.moveEntity(this, new int[] {x, y});
-		} catch(Exception e){
-			System.out.println("Failed To Move");
+		} catch(DungeonException e){
+			System.out.println(e.getMessage());
 			return;
 		}
 		setPosition(x, y);

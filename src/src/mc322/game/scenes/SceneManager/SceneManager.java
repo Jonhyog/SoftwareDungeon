@@ -1,10 +1,13 @@
-package mc322.game.scenes;
+package mc322.game.scenes.SceneManager;
 
 import java.awt.Component;
 import java.util.Hashtable;
 
 import mc322.game.displays.GameWindow;
 import mc322.game.input.KeyManager;
+import mc322.game.scenes.Scene;
+import mc322.game.scenes.SceneManager.exceptions.SceneManagerException;
+import mc322.game.scenes.SceneManager.exceptions.SceneNotFound;
 
 public class SceneManager {
 	private Scene currentScene;
@@ -18,6 +21,14 @@ public class SceneManager {
 		scenes = new Hashtable<String, Scene>();
 	}
 	
+	private void setCurrentScene(Scene scene) {
+		this.currentScene = scene;
+	}
+	
+	private void setCurrentSceneName(String name) {
+		this.currentName = name;
+	}
+	
 	public void setDisplay(GameWindow main) {
 		this.main = main;
 	}
@@ -27,11 +38,14 @@ public class SceneManager {
 		cena.setCallback(this);
 	}
 	
-	public void setCurrent(String name) {
+	public void setCurrent(String name) throws SceneManagerException {
 		System.out.println("Mudando Cena: " + currentName +" -> " + name);
+		Scene novaScene = scenes.get(name);
+		if (novaScene == null)
+			throw new SceneNotFound();
 		removeCurrent();
-		this.currentScene = scenes.get(name);
-		this.currentName = name;
+		setCurrentScene(novaScene);
+		setCurrentSceneName(name);
 		conectScene2Display();
 	}
 	

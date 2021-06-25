@@ -26,7 +26,7 @@
 16 16 monitor 192 16 25 true
 16 16 tablet 160 32 26 true
 16 16 notebook 176 32 27 true
-16 16 cafe 160 64 28 true
+16 16 cafe 160 64 28 false
 16 16 coracao 176 64 29 true
-16 16 chave 192 64 30 true
+16 16 chave 192 64 30 false
 16 16 cursor 224 16 31 true

@@ -42,7 +42,7 @@ public abstract class Hero extends DynamicEntity {
 	}
 	
 	public void attack(int[] target) {
-		System.out.println("Atacando X: " + target[0] + " Y: " + target[0]);
+		System.out.println("Atacando X: " + target[0] + " Y: " + target[1]);
 		IDungeon fatherCell = (IDungeon) father;
 		fatherCell.handleAttack(this, target);
 		n++;

@@ -1,32 +1,26 @@
-package mc322.game.composites.enemies;
+package mc322.game.composites.items;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 
 import mc322.game.composites.Entity;
 import mc322.game.composites.dungeon.IDungeon;
-import mc322.game.composites.dungeon.exceptions.DungeonException;
 import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
 
-public class Bug extends Enemy {
-	
-	public Bug(Sprite texture) {
-		super();
-		this.texture = texture;
-		this.life = 10;
-		this.attack = 2;
-		this.range = 3;
+public class Door extends Item {
+
+	public Door(Sprite texture) {
+		super(texture);
 	}
-	
+
 	@Override
 	public void addEntity(Entity ent) {
-		// TODO Auto-generated method stub
+		return;
 	}
 
 	@Override
 	public void removeEntity(Entity ent) {
-		// TODO Auto-generated method stub
+		return;
 	}
 
 	@Override
@@ -36,6 +30,11 @@ public class Bug extends Enemy {
 
 	@Override
 	public void update(KeyManager key) {
-		super.update(key);
+		// TODO Auto-generated method stub
+	}
+	
+	public void actionPerformed() {	
+		setSolida(!solid);
+		changeTexture();
 	}
 }

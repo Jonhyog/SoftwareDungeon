@@ -1,23 +1,29 @@
 package mc322.game.composites.heroes;
 
 import java.awt.Graphics2D;
-import java.util.NoSuchElementException;
+import java.util.ArrayList;
 
-import mc322.game.composites.Cell;
 import mc322.game.composites.Entity;
+import mc322.game.composites.dungeon.IDungeon;
 import mc322.game.composites.dungeon.exceptions.DungeonException;
 import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
 
-public class Hacker extends Hero {
+public class Hacker extends Hero implements IHero {
+	
 	public Hacker(Sprite sprite) {
 		super();
 		this.texture = sprite;
 		this.life = 10;
 		this.attack = 2;
-		this.range = 2;
+		this.range = 5;
+
+		this.ticks = 0;
+		this.n = 0;
+		this.minimunDistance = 0;
 	}
 	
+	// Fim de movimento com mouse
 	@Override
 	public void addEntity(Entity ent) {
 		// TODO Auto-generated method stub
@@ -35,26 +41,6 @@ public class Hacker extends Hero {
 
 	@Override
 	public void update(KeyManager key) {
-		try {
-			// System.out.println("X: " + x + " Y: " + y);
-			int chave = key.nextKey();
-			heroMovement.move(chave, this);
-		} catch (NoSuchElementException e) {
-			// NAO HA NECESSIDADE DE ATUALIZAR SE
-			// NAO HOUVE INPUT
-			return;
-		}
-	}
-
-	@Override
-	public void move(int x, int y) {
-		try {
-			Cell fatherCell = (Cell) father;
-			fatherCell.moveEntity(this, new int[] {x, y});
-		} catch(DungeonException e){
-			System.out.println(e.getMessage());
-			return;
-		}
-		setPosition(x, y);
+		super.update(key);
 	}
 }

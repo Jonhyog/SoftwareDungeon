@@ -4,7 +4,7 @@ import mc322.game.composites.enemies.*;
 import mc322.game.gfx.Assets;
 
 public class EnemyBuilder {
-	public boolean isEnemy(String hero) {
+	public static boolean isEnemy(String hero) {
 		switch (hero) {
 		case "bug":
 		case "erro":
@@ -18,7 +18,7 @@ public class EnemyBuilder {
 		return false;
 	}
 	
-	public Enemy buildEnemy(Assets gameAssets, String enemyName) {
+	public static Enemy buildEnemy(Assets gameAssets, String enemyName) {
 		Enemy enemy = null;
 		
 		switch (enemyName) {

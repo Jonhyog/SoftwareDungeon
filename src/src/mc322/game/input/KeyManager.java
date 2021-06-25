@@ -18,6 +18,10 @@ public class KeyManager implements KeyListener {
 		return keyQueue.remove();
 	}
 	
+	public void clearKeys() {
+		keyQueue.clear();
+	}
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// System.out.println("Adicionando ao Buffer: " + e.getKeyChar());

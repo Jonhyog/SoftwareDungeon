@@ -32,4 +32,12 @@ public abstract class StaticEntity implements Entity {
 	public int[] getPosition() {
 		return new int[] {x, y};
 	}
+	
+	public void updateLife(int n) {
+		return;
+	}
+	
+	public int getDamage() {
+		return 0;
+	}
 }

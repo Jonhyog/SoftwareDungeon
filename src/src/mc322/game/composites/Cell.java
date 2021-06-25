@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import mc322.game.composites.dungeon.Dungeon;
+import mc322.game.composites.dungeon.IDungeon;
 import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
 
@@ -33,23 +34,19 @@ public class Cell extends StaticEntity {
 	}
 	
 	public void moveEntity(Entity ent, int[] target){
-		Dungeon fatherDungeon = (Dungeon) father;
+		IDungeon fatherDungeon = (IDungeon) father; // FIX
 		fatherDungeon.moveEntity(ent, target);
 		removeStack.add(ent); // Remocao nao pode ocorrer durante iteracao 
 	}
 	
+	public void queueRemoval(Entity ent) {
+		removeStack.add(ent);
+	}
+	
 	@Override
 	public void addEntity(Entity ent) {
-//		System.out.println("Antes: ");
-//		for (Entity enti : entitys) {
-//			System.out.println(enti);
-//		}
 		entitys.add(ent);
-//		System.out.println("Depois: ");
-//		for (Entity enti : entitys) {
-//			System.out.println(enti);
-//		}
-		ent.setCallback(this);
+		ent.setCallback(this.father); // FIX: DEVE TER MANEIRA RECURSIVA SE ESCALAR NOS
 	}
 
 	@Override
@@ -68,15 +65,21 @@ public class Cell extends StaticEntity {
 
 	@Override
 	public void update(KeyManager key) {
-		for (Entity ent : entitys) {
-			ent.update(key);
-		}
-		
 		if (!removeStack.empty()) {
-			for (Entity ent : removeStack)
+			for (Entity ent : removeStack) {
 				removeEntity(ent);
+			}
 			removeStack.clear();
 		}
-			
+		
+		for (Entity ent : entitys) {
+			ent.update(key);
+		}		
+	}
+	
+	public void updateLife(int n) {
+		for (Entity ent : entitys) {
+			ent.updateLife(n);
+		}
 	}
 }

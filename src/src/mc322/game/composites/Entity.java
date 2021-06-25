@@ -16,4 +16,6 @@ public interface Entity {
 	public boolean isSolid();
 	public void render(Graphics2D g);
 	public void update(KeyManager key);
+	public void updateLife(int n);
+	public int getDamage();
 }

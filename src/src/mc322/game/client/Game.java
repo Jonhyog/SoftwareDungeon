@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import mc322.game.displays.GameWindow;
 import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
+import mc322.game.input.MouseManager;
 import mc322.game.scenes.GameScene;
 // import mc322.game.input.MouseManager;
 import mc322.game.scenes.MenuScene;
@@ -22,7 +23,7 @@ public class Game {
 	
 	private GameWindow main;
 	private KeyManager key;
-	// private MouseManager mouse;
+	private MouseManager mouse;
 	private Clock clock;
 	private Toolkit toolkit = Toolkit.getDefaultToolkit();
 	
@@ -76,14 +77,18 @@ public class Game {
 		
 		main = new GameWindow(title, width, height);
 		key = new KeyManager();
+		mouse = new MouseManager();
 		// mouse = new MouseManager();
 		main.addKeyListener(key);
+		main.addMouseListener(mouse);
 		
 		loadAssets();
 		main.setIconImage(gameAssets.getSprite("bug").getTexture());
 		createScenes();
 		sceneMan.setCurrent("Menu");
 		setCursor(gameAssets.getSprite("cursor").getTexture());
+		
+		sceneMan.setInputSource(key, mouse);
 	}
 	
 	private void runLoop() {

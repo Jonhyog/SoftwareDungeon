@@ -4,16 +4,23 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import mc322.game.composites.Entity;
+import mc322.game.composites.GameControler;
 import mc322.game.composites.dungeon.Dungeon;
+import mc322.game.composites.heroes.IHero;
+import mc322.game.factory.CellBuilder;
 import mc322.game.factory.DungeonBuilder;
+import mc322.game.factory.EnemyBuilder;
+import mc322.game.factory.HeroBuilder;
 import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
+import mc322.game.input.MouseManager;
 import mc322.game.scenes.sceneManager.SceneManager;
 import mc322.game.util.AStar;
+import mc322.game.util.IPathfinder;
 
 public class GameScene extends JPanel implements Scene {
 	
@@ -23,6 +30,7 @@ public class GameScene extends JPanel implements Scene {
 	private int width, height;
 	private SceneControl sceneCtrl;
 	private Dungeon dg;
+	private GameControler gameCtrl;
 	
 	public GameScene(int width, int height) {
 		super();
@@ -38,7 +46,12 @@ public class GameScene extends JPanel implements Scene {
 		super.setMinimumSize(new Dimension(width, height));
 		super.setFocusable(false);
 		
-		this.sceneCtrl = new SceneControl(); 
+		this.sceneCtrl = new SceneControl();
+	}
+	
+	public void connectInputSource(KeyManager key, MouseManager mouse) {
+		gameCtrl.connectKeyInputSource(key);
+		gameCtrl.connectMouseInputSource(mouse);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -53,6 +66,9 @@ public class GameScene extends JPanel implements Scene {
 	@Override
 	public void update(KeyManager key) {
 		dg.update(key);
+		//FIX
+		gameCtrl.connectKeyInputSource(key);
+		gameCtrl.update();
 		render();
 	}
 
@@ -69,8 +85,11 @@ public class GameScene extends JPanel implements Scene {
 	@Override
 	public void initScene(Assets gameAssets) {
 		DungeonBuilder builder = new DungeonBuilder();
-		builder.setDungeonMap("res/dungeons/labirinto.dg");
+//		builder.setDungeonMap("res/dungeons/labirinto.dg");
+		builder.setDungeonMap("res/dungeons/dungeon2.dg");
 		builder.loadDungeonTiles(gameAssets);
+		
+		this.gameCtrl = new GameControler();
 		
 		int[] size = builder.getSize();
 		this.dg = new Dungeon();
@@ -78,17 +97,41 @@ public class GameScene extends JPanel implements Scene {
 		System.out.println("\tDungeon (" + size[0] + ", " + size[1] + "): Loading");
 		for (int i = 0; i < size[1]; i++) {
 			for (int j = 0; j < size[0]; j++) {
-				dg.addEntity(builder.nextCell(gameAssets));
+				// NOVA CONSTRUCAO DA CELULA
+				int id = builder.nextCell();
+				String name = gameAssets.getName(id);
+				Entity ent = null, cell;
+				cell = CellBuilder.buildCell(gameAssets, id);
+				if (HeroBuilder.isHero(name)) {
+					ent = HeroBuilder.buildHero(gameAssets, name);
+					cell.setTexture(gameAssets.getSprite(CellBuilder.getDefaultTile()));
+					cell.setSolida(false);
+					dg.setJogador(ent);
+					gameCtrl.setJogador((IHero) ent); // FIX
+				} else if (EnemyBuilder.isEnemy(name)) {
+					ent = EnemyBuilder.buildEnemy(gameAssets, name);
+					cell.setTexture(gameAssets.getSprite(CellBuilder.getDefaultTile()));
+					cell.setSolida(false);
+				} else {
+					cell.setTexture(gameAssets.getSprite(name));
+					cell.setSolida(gameAssets.getSprite(name).isSolid());
+				}
+				
+				dg.addEntity(cell);
+				if (ent != null) {
+					cell.addEntity(ent);
+				}
+				cell.setPosition(j, i);
+				// FIM DA NOVA CONSTRUCAO
 			}
 		}
 		
-		AStar pathFinder = new AStar();
-		ArrayList<int[]> caminho = pathFinder.findPath(new int[] {0,  1}, new int[] {3, 18}, dg);
-		for (int[] ponto : caminho) {
-			System.out.println("X: " + ponto[0] + " Y: " + ponto[1]);
-		}
+		IPathfinder pathFinder = new AStar();
+		dg.connectPathfinder(pathFinder);
+		gameCtrl.setDungeon(dg);
 		System.out.println("\tCaverna: ok");
 		System.out.println("GameScene: ok");
+	
 	}
 	
 	

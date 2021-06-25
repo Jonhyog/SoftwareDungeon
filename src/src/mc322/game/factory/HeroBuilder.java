@@ -5,7 +5,7 @@ import mc322.game.gfx.Assets;
 
 public class HeroBuilder {
 	
-	public boolean isHero(String hero) {
+	public static boolean isHero(String hero) {
 		switch (hero) {
 		case "hacker":
 		case "engenheiro":
@@ -19,7 +19,7 @@ public class HeroBuilder {
 		return false;
 	}
 	
-	public Hero buildHero(Assets gameAssets, String hero) {
+	public static Hero buildHero(Assets gameAssets, String hero) {
 		Hero jogador = null;
 		
 		switch (hero) {

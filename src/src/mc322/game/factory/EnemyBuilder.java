@@ -36,9 +36,10 @@ public class EnemyBuilder {
 				break;
 			default:
 				if (enemy == null)
-					System.out.println("FIX-ME"); // Lanca Excecao
+					System.out.println("FIX-ME: Inimigo Desconhecido"); // Lanca Excecao
 				break;
 		}
+//		enemy.setSolida(gameAssets.getSprite(enemyName).isSolid());
 		enemy.setMovement(new EnemyMovement());
 		return enemy;
 	}

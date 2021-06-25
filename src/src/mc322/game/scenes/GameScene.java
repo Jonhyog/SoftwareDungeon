@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -11,10 +12,12 @@ import mc322.game.composites.Entity;
 import mc322.game.composites.GameControler;
 import mc322.game.composites.dungeon.Dungeon;
 import mc322.game.composites.heroes.IHero;
+import mc322.game.composites.items.Item;
 import mc322.game.factory.CellBuilder;
 import mc322.game.factory.DungeonBuilder;
 import mc322.game.factory.EnemyBuilder;
 import mc322.game.factory.HeroBuilder;
+import mc322.game.factory.ItemBuilder;
 import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
 import mc322.game.input.MouseManager;
@@ -85,9 +88,8 @@ public class GameScene extends JPanel implements Scene {
 	@Override
 	public void initScene(Assets gameAssets) {
 		DungeonBuilder builder = new DungeonBuilder();
-//		builder.setDungeonMap("res/dungeons/labirinto.dg");
-		builder.setDungeonMap("res/dungeons/dungeon2.dg");
-		builder.loadDungeonTiles(gameAssets);
+		builder.setDungeonMap("res/dungeons/dungeon2.txt");
+		builder.loadDungeon(gameAssets);
 		
 		this.gameCtrl = new GameControler();
 		
@@ -95,34 +97,50 @@ public class GameScene extends JPanel implements Scene {
 		this.dg = new Dungeon();
 		dg.setSize(size[0], size[1]);
 		System.out.println("\tDungeon (" + size[0] + ", " + size[1] + "): Loading");
+		
+		Entity cell;
 		for (int i = 0; i < size[1]; i++) {
 			for (int j = 0; j < size[0]; j++) {
-				// NOVA CONSTRUCAO DA CELULA
 				int id = builder.nextCell();
 				String name = gameAssets.getName(id);
-				Entity ent = null, cell;
 				cell = CellBuilder.buildCell(gameAssets, id);
-				if (HeroBuilder.isHero(name)) {
-					ent = HeroBuilder.buildHero(gameAssets, name);
-					cell.setTexture(gameAssets.getSprite(CellBuilder.getDefaultTile()));
-					cell.setSolida(false);
-					dg.setJogador(ent);
-					gameCtrl.setJogador((IHero) ent); // FIX
-				} else if (EnemyBuilder.isEnemy(name)) {
-					ent = EnemyBuilder.buildEnemy(gameAssets, name);
-					cell.setTexture(gameAssets.getSprite(CellBuilder.getDefaultTile()));
-					cell.setSolida(false);
-				} else {
-					cell.setTexture(gameAssets.getSprite(name));
-					cell.setSolida(gameAssets.getSprite(name).isSolid());
-				}
-				
+				cell.setTexture(gameAssets.getSprite(name));
+				cell.setSolida(gameAssets.getSprite(name).isSolid());
+				cell.setPosition(j, i);				
 				dg.addEntity(cell);
-				if (ent != null) {
-					cell.addEntity(ent);
+			}
+		}
+		
+		ArrayList<String[]> entidades = builder.getEntidade();
+		for (String[] entidade : entidades) {
+			Entity ent = null;
+			String name = entidade[0];
+			int x = Integer.parseInt(entidade[1]);
+			int y = Integer.parseInt(entidade[2]);
+			
+			cell = dg.getTile(x, y);
+			if (HeroBuilder.isHero(name)) {
+				System.out.println("Criando Jogador");
+				ent = HeroBuilder.buildHero(gameAssets, name);
+				dg.setJogador(ent);
+				gameCtrl.setJogador((IHero) ent); // FIX
+			} else if (EnemyBuilder.isEnemy(name)) {
+				ent = EnemyBuilder.buildEnemy(gameAssets, name);
+			} else if (ItemBuilder.isItem(name)){
+				Item item = ItemBuilder.buildItem(gameAssets, name);
+				if (name.equals("portaTrancada")) {
+					Item chave = ItemBuilder.buildItem(gameAssets, entidade[3]);
+					chave.setPosition(Integer.parseInt(entidade[4]), Integer.parseInt(entidade[5]));
+					dg.getTile(Integer.parseInt(entidade[4]), Integer.parseInt(entidade[5])).addEntity(chave);
+					chave.addListener(item);
+					item.setAlternativetexture(gameAssets.getSprite("portaAberta"));
 				}
-				cell.setPosition(j, i);
-				// FIM DA NOVA CONSTRUCAO
+				ent = item;
+			}
+			
+			if (ent != null) {
+				ent.setPosition(x, y);
+				cell.addEntity(ent);
 			}
 		}
 		

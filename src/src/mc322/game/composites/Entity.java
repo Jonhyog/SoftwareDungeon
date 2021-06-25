@@ -18,4 +18,5 @@ public interface Entity {
 	public void update(KeyManager key);
 	public void updateLife(int n);
 	public int getDamage();
+	public void interact(Entity ent);
 }

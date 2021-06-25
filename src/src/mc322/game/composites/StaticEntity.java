@@ -40,4 +40,8 @@ public abstract class StaticEntity implements Entity {
 	public int getDamage() {
 		return 0;
 	}
+	
+	public void interact(Entity ent) {
+		return;
+	}
 }

@@ -33,6 +33,14 @@ public class Cell extends StaticEntity {
 		}
 	}
 	
+	public boolean isSolid() {
+		for (Entity ent : entitys) {
+			if (ent.isSolid())
+				return ent.isSolid();
+		}
+		return this.solid;
+	}
+	
 	public void moveEntity(Entity ent, int[] target){
 		IDungeon fatherDungeon = (IDungeon) father; // FIX
 		fatherDungeon.moveEntity(ent, target);
@@ -45,6 +53,9 @@ public class Cell extends StaticEntity {
 	
 	@Override
 	public void addEntity(Entity ent) {
+		for (Entity entidade : entitys) {
+			entidade.interact(ent);
+		}
 		entitys.add(ent);
 		ent.setCallback(this.father); // FIX: DEVE TER MANEIRA RECURSIVA SE ESCALAR NOS
 	}

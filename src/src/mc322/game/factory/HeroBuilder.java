@@ -37,9 +37,10 @@ public class HeroBuilder {
 				break;
 			default:
 				if (jogador == null)
-					System.out.println("FIX-ME"); // Lanca Excecao
+					System.out.println("FIX-ME: Heroi desconhecido"); // Lanca Excecao
 				break;
 		}
+		// jogador.setSolida(gameAssets.getSprite(hero).isSolid());
 		jogador.setMovement(new HeroMovement());
 		return jogador;
 	}

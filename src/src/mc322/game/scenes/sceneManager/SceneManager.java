@@ -4,7 +4,9 @@ import java.awt.Component;
 import java.util.Hashtable;
 
 import mc322.game.displays.GameWindow;
+import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
+import mc322.game.input.MouseManager;
 import mc322.game.scenes.Scene;
 import mc322.game.scenes.sceneManager.exceptions.SceneManagerException;
 import mc322.game.scenes.sceneManager.exceptions.SceneNotFound;
@@ -14,6 +16,8 @@ public class SceneManager {
 	private String currentName;
 	private GameWindow main;
 	private Hashtable<String, Scene> scenes;
+	private MouseManager mouse;
+	private KeyManager key;
 	
 	public SceneManager() {
 		currentScene = null;
@@ -31,6 +35,19 @@ public class SceneManager {
 	
 	public void setDisplay(GameWindow main) {
 		this.main = main;
+	}
+	
+	public void setInputSource(KeyManager key, MouseManager mouse) {
+		this.key = key;
+		this.mouse = mouse;
+	}
+	
+	public KeyManager getKeyManager() {
+		return this.key;
+	}
+	
+	public MouseManager getMouseManager() {
+		return this.mouse;
 	}
 	
 	public void addScene(String name, Scene cena) {
@@ -51,6 +68,7 @@ public class SceneManager {
 	
 	private void conectScene2Display() {
 		if (main != null) {
+			currentScene.connectInputSource(key, mouse);
 			main.add((Component) currentScene);
 		}
 	}

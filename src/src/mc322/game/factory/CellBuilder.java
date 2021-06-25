@@ -7,26 +7,23 @@ import mc322.game.gfx.Assets;
 public class CellBuilder {
 	
 	private static String defaultTile = "piso2";
+	private static boolean defaultSolid = false;
 	
-	public Entity buildCell(Assets gameAssets, int id) {
+	public static String getDefaultTile() {
+		return CellBuilder.defaultTile;
+	}
+	
+	public static boolean getDefaultSolid() {
+		return CellBuilder.defaultSolid;
+	}
+	
+	public static Entity buildCell(Assets gameAssets, int id) {
 		Cell cell = new Cell();
 		String name = gameAssets.getName(id);
-		HeroBuilder heroBuilder = new HeroBuilder();
-		EnemyBuilder enemyBuilder = new EnemyBuilder();
-		
-		if (heroBuilder.isHero(name)) {
-			cell.addEntity(heroBuilder.buildHero(gameAssets, name));
-			cell.setTexture(gameAssets.getSprite(defaultTile));
-			cell.setSolida(false);
-		} else if (enemyBuilder.isEnemy(name)) {
-			cell.addEntity(enemyBuilder.buildEnemy(gameAssets, name));
-			cell.setTexture(gameAssets.getSprite(defaultTile));
-			cell.setSolida(false);
-		} else {
-			cell.setTexture(gameAssets.getSprite(name));
-			cell.setSolida(gameAssets.getSprite(name).isSolid());
-		}
+		cell.setTexture(gameAssets.getSprite(name));
+		cell.setSolida(gameAssets.getSprite(name).isSolid());
 		
 		return cell;
+		
 	}
 }

@@ -8,7 +8,7 @@ import mc322.game.composites.Entity;
 import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
 
-public class Estagiario extends Hero {
+public class Estagiario extends Hero implements IHero {
 	public Estagiario(Sprite sprite) {
 		super();
 		this.texture = sprite;
@@ -34,27 +34,6 @@ public class Estagiario extends Hero {
 
 	@Override
 	public void update(KeyManager key) {
-		try {
-			System.out.println("X: " + x + " Y: " + y);
-			int chave = key.nextKey();
-			heroMovement.move(chave, this);
-		} catch (NoSuchElementException e) {
-			// NAO HA NECESSIDADE DE ATUALIZAR SE
-			// NAO HOUVE INPUT
-			return;
-		}
-	}
-
-	@Override
-	public void move(int x, int y) {
-		try {
-			Cell fatherCell = (Cell) father;
-			System.out.println("Attempting movement to " + x + " " + y);
-			fatherCell.moveEntity(this, new int[] {x, y});
-		} catch(Exception e){
-			System.out.println("Failed To Move");
-			return;
-		}
-		setPosition(x, y);
+		super.update(key);
 	}
 }

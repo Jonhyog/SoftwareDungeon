@@ -35,14 +35,6 @@ public class Virus extends Enemy {
 
 	@Override
 	public void update(KeyManager key) {
-		// TODO Auto-generated method stub
-		
+		super.update(key);
 	}
-
-	@Override
-	public void move(int x, int y) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 import mc322.game.composites.Entity;
 import mc322.game.composites.dungeon.Dungeon;
 
-public class AStar {
+public class AStar implements IPathfinder {
 	private int normaTaxista(int[] a, int[] b) {
 		return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
 	}
@@ -22,14 +22,10 @@ public class AStar {
 			};
 		ArrayList<Node> vizinhos = new ArrayList<Node>();
 		Node novoNo;
-//		System.out.println("Father G: " + father.getGCost() + "H: " + father.getHCost() + "F: " + father.getFCost());
 		for (int i = 0; i < posicoesVizinhos.length; i++) {
-//			System.out.println(dg.isValidPosition(posicoesVizinhos[i][0], posicoesVizinhos[i][1]));
 			if (dg.isValidPosition(posicoesVizinhos[i][0], posicoesVizinhos[i][1])) {
-//				System.out.println(posicoesVizinhos[i][0] + " " + posicoesVizinhos[i][1]);
 				novoNo = new Node(posicoesVizinhos[i]);
 				novoNo.setFather(father);
-//				System.out.println("Cheguei Aqui");
 				novoNo.setGCost(father.getGCost() + 1);
 				novoNo.setHCost(normaTaxista(posicoesVizinhos[i], target));
 				novoNo.setFCost();
@@ -80,6 +76,7 @@ public class AStar {
 		PriorityQueue<Node> fPrio = new PriorityQueue<Node>(10, new NodeComparator());
 		ArrayList<Node> vizinhos;
 		Node atual = null;
+		boolean encontrou = false;
 		int[] pos, size = dg.getSize();
 		boolean[][] visitados = new boolean[size[1]][size[0]];
 		
@@ -99,8 +96,10 @@ public class AStar {
 			pos = atual.getPosition();
 			visitados[pos[1]][pos[0]] = true;
 			
-			if (pos[0] == target[0] && pos[1] == target[1])
+			if (pos[0] == target[0] && pos[1] == target[1]) {
+				encontrou = true;
 				break;
+			}
 			
 			vizinhos = generateNeighbourNodes(atual, dg, source, target);
 			for (Node vizinho : vizinhos) {
@@ -123,6 +122,8 @@ public class AStar {
 			}
 		}
 		
+		if (!encontrou)
+			return null;
 		
 		return generatePath(atual);
 	}

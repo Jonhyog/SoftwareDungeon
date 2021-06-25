@@ -1,19 +1,25 @@
 package mc322.game.composites.dungeon;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
+import mc322.game.composites.Cell;
 import mc322.game.composites.Entity;
 import mc322.game.composites.StaticEntity;
 import mc322.game.composites.dungeon.exceptions.DungeonException;
 import mc322.game.composites.dungeon.exceptions.InvalidMovement;
 import mc322.game.composites.dungeon.exceptions.InvalidPosition;
 import mc322.game.input.KeyManager;
+import mc322.game.util.IPathfinder;
 
-public class Dungeon extends StaticEntity {
+public class Dungeon extends StaticEntity implements IDungeon {
 	private int i, j;
 	private Entity[][] tiles;
 	private Entity jogador;
-	private boolean turno;
+	private boolean turnoJogador = true;
+	private boolean toggleTurnChange = false;
+	public boolean entitiesUpdating = false;
+	private IPathfinder pathFinder;
 	
 	public Dungeon () {
 		tiles = null;
@@ -27,6 +33,38 @@ public class Dungeon extends StaticEntity {
 		this.tiles = new Entity[y][x];
 	}
 	
+	public void setJogador(Entity jogador) {
+		this.jogador = jogador;
+	}
+	
+	public int[] getPlayerPosition() {
+		return this.jogador.getPosition();
+	}
+	
+	public boolean isPlayerTurn() {
+		return turnoJogador;
+	}
+	
+	private void toggleTurnChange() {
+		this.toggleTurnChange = !toggleTurnChange;
+	}
+	
+	public void toggleUpdating(boolean value) {
+		this.entitiesUpdating = value;
+	}
+	
+	private void nextTurn() {
+		if (this.toggleTurnChange) {
+			System.out.println("Trocando turno");
+			this.turnoJogador = !turnoJogador;
+			toggleTurnChange();	
+		}
+	}
+	
+	public void requestNextTurn() {
+		toggleTurnChange();
+	}
+	
 	public int[] getSize() {
 		return new int[] {x, y};
 	}
@@ -38,14 +76,28 @@ public class Dungeon extends StaticEntity {
 		return tiles != null ? tiles[y][x] : null;
 	}
 	
+	public void connectPathfinder(IPathfinder pathFinder) {
+		this.pathFinder = pathFinder;
+	}
+	
+	@Override
+	public ArrayList<int[]> findPath(int[] source, int[] target) {
+		return pathFinder.findPath(source, target, this);
+	}
+	
 	public void moveEntity(Entity ent, int[] target) throws DungeonException {
-		Entity tile = getTile(target[0], target[1]);
+		int[] source = ent.getPosition();
+		// FIX-ME: CAST NAO DEVE SER FEITO - add QueueRemoval a Entity
+		Cell sourceTile = (Cell) getTile(source[0], source[1]);
+		Entity targetTile = getTile(target[0], target[1]);
 		
-		if (tile.isSolid())
+		if (targetTile.isSolid())
 			throw new InvalidMovement("Movimento para tile solido nao eh valido");
 		
-		tile.addEntity(ent);
+		sourceTile.queueRemoval(ent);
+		targetTile.addEntity(ent);
 		ent.setPosition(target[0], target[1]);
+		this.entitiesUpdating = true;
 	}
 	
 	public boolean isValidPosition(int a, int b) {
@@ -69,9 +121,10 @@ public class Dungeon extends StaticEntity {
 	}
 
 	@Override
-	public void removeEntity(Entity ent) {
-		// TODO Auto-generated method stub
-		
+	public void removeEntity(Entity ent) { // FIX-ME: CAST NAO DEVE SER FEITO
+		int pos[] = ent.getPosition();
+		Cell cell = (Cell) getTile(pos[0], pos[1]);
+		cell.queueRemoval(ent);
 	}
 
 	@Override
@@ -92,10 +145,27 @@ public class Dungeon extends StaticEntity {
 
 	@Override
 	public void update(KeyManager key) {
+		toggleUpdating(false);
 		for (int posY = 0; posY < y; posY++) {
 			for (int posX = 0; posX < x; posX++) {
-				tiles[posY][posX].update(key);
+				getTile(posX, posY).update(key);
 			}
 		}
+		
+		if (!isPlayerTurn() && !this.entitiesUpdating) {
+			requestNextTurn();
+		}
+		
+		nextTurn();
+	}
+	
+	public void handleAttack(Entity attacker, int[] target) {
+		Entity targetTile = getTile(target[0], target[1]);
+		
+//		if (targetTile.isSolid())
+//			throw new InvalidMovement("Movimento para tile solido nao eh valido");
+		
+		targetTile.updateLife(-attacker.getDamage());
+		this.entitiesUpdating = true;
 	}
 }

@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
+import mc322.game.input.MouseManager;
 import mc322.game.scenes.sceneManager.SceneManager;
 
 public class MenuScene extends JPanel implements Scene, ActionListener{
@@ -34,6 +35,9 @@ public class MenuScene extends JPanel implements Scene, ActionListener{
 		super.setMaximumSize(new Dimension(width, height));
 		super.setMinimumSize(new Dimension(width, height));
 		super.setFocusable(false);
+	}
+	
+	public void connectInputSource(KeyManager key, MouseManager mouse) {
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -82,6 +86,7 @@ public class MenuScene extends JPanel implements Scene, ActionListener{
 		super.add(btt);
 		System.out.println("\tBotao Jogar: ok");
 		System.out.println("MenuScene: ok");
+		
 	}
 
 }

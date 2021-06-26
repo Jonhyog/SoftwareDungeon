@@ -14,6 +14,7 @@ public abstract class Enemy extends DynamicEntity {
 	
 	protected Enemy() {
 		setSolida(false);
+		setType("Enemy");
 		this.ticks = 0;
 		this.n = 0;
 		this.minimunDistance = 1;

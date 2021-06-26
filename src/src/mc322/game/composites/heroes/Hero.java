@@ -14,6 +14,7 @@ public abstract class Hero extends DynamicEntity {
 	
 	protected Hero() {
 		setSolida(false);
+		setType("Hero");
 	}
 	
 	public void setMovement(Movement heroMovement) {

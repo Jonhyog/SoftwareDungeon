@@ -13,6 +13,7 @@ public interface Entity {
 	public void setSolida(boolean solid);
 	public void setCallback(Entity father);
 	public int[] getPosition();
+	public String getType();
 	public boolean isSolid();
 	public void render(Graphics2D g);
 	public void update(KeyManager key);

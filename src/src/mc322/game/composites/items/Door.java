@@ -10,6 +10,7 @@ public class Door extends Item {
 
 	public Door(Sprite texture) {
 		super(texture);
+		setType("Door");
 	}
 
 	@Override

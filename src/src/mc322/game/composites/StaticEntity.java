@@ -8,6 +8,7 @@ public abstract class StaticEntity implements Entity {
 	protected Entity father;
 	protected Sprite texture;
 	protected IAnimation animation;
+	protected String type;
 	protected boolean solid;
 	
 	public void setTexture(Sprite texture) {
@@ -18,6 +19,10 @@ public abstract class StaticEntity implements Entity {
 		this.father = father;
 	}
 	
+	protected void setType(String type) {
+		this.type = type;
+	}
+	
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -25,6 +30,10 @@ public abstract class StaticEntity implements Entity {
 	
 	public void setSolida(boolean solid) {
 		this.solid = solid;
+	}
+	
+	public String getType() {
+		return this.type;
 	}
 	
 	public boolean isSolid() {

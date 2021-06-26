@@ -88,7 +88,7 @@ public class GameScene extends JPanel implements Scene {
 	@Override
 	public void initScene(Assets gameAssets) {
 		DungeonBuilder builder = new DungeonBuilder();
-		builder.setDungeonMap("res/dungeons/dungeon.csv");
+		builder.setDungeonMap("res/dungeons/dungeon2.csv");
 		builder.setSep(";");
 		builder.loadDungeon(gameAssets);
 		

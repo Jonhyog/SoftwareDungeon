@@ -27,12 +27,14 @@ public class Coffe extends Item {
 
 	@Override
 	public void render(Graphics2D g) {
-		g.drawImage(texture.getTexture(), x * 32, y * 32, texture.getSizeX(), texture.getSizeY(), null);
+//		g.drawImage(texture.getTexture(), x * 32, y * 32, texture.getSizeX(), texture.getSizeY(), null);
+		Sprite text = animation.getCurrentFrame();
+		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
 	}
 
 	@Override
 	public void update(KeyManager key) {
-		// TODO Auto-generated method stub
+		animation.tick();
 	}
 	
 	public void interact(Entity ent) {

@@ -1,9 +1,12 @@
 package mc322.game.composites.enemies;
 
+import java.awt.Graphics2D;
+
 import mc322.game.composites.DynamicEntity;
 import mc322.game.composites.Movement;
 import mc322.game.composites.dungeon.IDungeon;
 import mc322.game.composites.dungeon.exceptions.DungeonException;
+import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
 
 public abstract class Enemy extends DynamicEntity {
@@ -35,8 +38,14 @@ public abstract class Enemy extends DynamicEntity {
 		return false;
 	}
 	
+	public void render(Graphics2D g) {
+		Sprite text = animation.getCurrentFrame();
+		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
+	}
+	
 	public void update(KeyManager key) {
 		IDungeon fatherCell = (IDungeon) father; //FIX-ME
+		animation.tick();
 		
 		if (!isAlive()) {
 			father.removeEntity(this);

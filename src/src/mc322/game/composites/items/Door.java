@@ -3,7 +3,6 @@ package mc322.game.composites.items;
 import java.awt.Graphics2D;
 
 import mc322.game.composites.Entity;
-import mc322.game.composites.dungeon.IDungeon;
 import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
 

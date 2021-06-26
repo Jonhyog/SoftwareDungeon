@@ -1,7 +1,9 @@
 package mc322.game.factory;
 
 import mc322.game.composites.heroes.*;
+import mc322.game.gfx.Animation;
 import mc322.game.gfx.Assets;
+import mc322.game.gfx.IAnimation;
 
 public class HeroBuilder {
 	
@@ -21,19 +23,32 @@ public class HeroBuilder {
 	
 	public static Hero buildHero(Assets gameAssets, String hero) {
 		Hero jogador = null;
+		IAnimation anim = new Animation();
 		
 		switch (hero) {
 			case "hacker":
-				jogador = new Hacker(gameAssets.getSprite(hero));
+				jogador = new Hacker();
+				anim.addFrame(gameAssets.getSprite("hacker1"), 15);
+				anim.addFrame(gameAssets.getSprite("hacker2"), 15);
+				anim.addFrame(gameAssets.getSprite("hacker3"), 15);
 				break;
 			case "engenheiro":
-				jogador = new Engenheiro(gameAssets.getSprite(hero));
+				jogador = new Engenheiro();
+				anim.addFrame(gameAssets.getSprite("engenheiro1"), 15);
+				anim.addFrame(gameAssets.getSprite("engenheiro2"), 15);
+				anim.addFrame(gameAssets.getSprite("engenheiro3"), 15);
 				break;
 			case "estagiario":
-				jogador = new Estagiario(gameAssets.getSprite(hero));
+				jogador = new Estagiario();
+				anim.addFrame(gameAssets.getSprite("estagiario1"), 15);
+				anim.addFrame(gameAssets.getSprite("estagiario2"), 15);
+				anim.addFrame(gameAssets.getSprite("estagiario3"), 15);
 				break;
 			case "tecnico":
-				jogador = new Tecnico(gameAssets.getSprite(hero));
+				jogador = new Tecnico();
+				anim.addFrame(gameAssets.getSprite("tecnico1"), 15);
+				anim.addFrame(gameAssets.getSprite("tecnico2"), 15);
+				anim.addFrame(gameAssets.getSprite("tecnico3"), 15);
 				break;
 			default:
 				if (jogador == null)
@@ -41,6 +56,7 @@ public class HeroBuilder {
 				break;
 		}
 		// jogador.setSolida(gameAssets.getSprite(hero).isSolid());
+		jogador.connectAnimation(anim);
 		jogador.setMovement(new HeroMovement());
 		return jogador;
 	}

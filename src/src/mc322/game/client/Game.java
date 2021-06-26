@@ -46,7 +46,7 @@ public class Game {
 	private void loadAssets() {
 		gameAssets = new Assets();
 		gameAssets.setSpriteSheet("res/textures/tiles.png");
-		gameAssets.setMap("res/textures/tiles.map");
+		gameAssets.setMap("res/textures/tiles.txt");
 		gameAssets.loadSprite();
 	}
 	
@@ -83,7 +83,7 @@ public class Game {
 		main.addMouseListener(mouse);
 		
 		loadAssets();
-		main.setIconImage(gameAssets.getSprite("bug").getTexture());
+		main.setIconImage(gameAssets.getSprite("bug1").getTexture());
 		createScenes();
 		sceneMan.setCurrent("Menu");
 		setCursor(gameAssets.getSprite("cursor").getTexture());

@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.util.Hashtable;
 
 import mc322.game.displays.GameWindow;
-import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
 import mc322.game.input.MouseManager;
 import mc322.game.scenes.Scene;

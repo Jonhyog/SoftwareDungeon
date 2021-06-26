@@ -1,11 +1,13 @@
 package mc322.game.composites;
 
+import mc322.game.gfx.IAnimation;
 import mc322.game.gfx.Sprite;
 
 public abstract class StaticEntity implements Entity {
 	protected int x, y;
 	protected Entity father;
 	protected Sprite texture;
+	protected IAnimation animation;
 	protected boolean solid;
 	
 	public void setTexture(Sprite texture) {
@@ -43,5 +45,9 @@ public abstract class StaticEntity implements Entity {
 	
 	public void interact(Entity ent) {
 		return;
+	}
+	
+	public void connectAnimation(IAnimation animation) {
+		this.animation = animation;
 	}
 }

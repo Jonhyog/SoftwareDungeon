@@ -32,26 +32,26 @@ public class Assets {
 		Sprite sprite;
 		String[] line;
 		String name;
-		int sizeX, sizeY, x, y, id;
+		int xInicial, yInicial, xFinal = 0, yFinal = 0, id;
 		boolean solid;
 		
 		while(spriteMap.hasNextLine()) {
 			
 			line = spriteMap.nextLine().split(" ");
 			
-			sizeX = Integer.parseInt(line[0]);
-			sizeY = Integer.parseInt(line[1]);
-			name = line[2];
-			x = Integer.parseInt(line[3]);
-			y = Integer.parseInt(line[4]);
+			name = line[0];
+			xInicial = Integer.parseInt(line[1]);
+			yInicial = Integer.parseInt(line[2]);
+			xFinal = Integer.parseInt(line[3]);
+			yFinal = Integer.parseInt(line[4]);
 			id = Integer.parseInt(line[5]);
 			solid = Boolean.parseBoolean(line[6]);
 			
 			sprite = new Sprite();
 			sprite.setName(name);
-			sprite.setTexture(spriteSheet.getSubimage(x, y, sizeX, sizeY));
-			sprite.setSizeX(32);
-			sprite.setSizeY(32); // REVER
+			sprite.setTexture(spriteSheet.getSubimage(xInicial, yInicial, xFinal - xInicial + 1, yFinal - yInicial + 1));
+			sprite.setSizeX((xFinal - xInicial + 1) * 2);
+			sprite.setSizeY((yFinal - yInicial + 1) * 2);
 			sprite.setId(id);
 			sprite.setSolid(solid);
 			

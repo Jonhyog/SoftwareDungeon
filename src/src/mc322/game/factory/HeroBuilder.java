@@ -31,6 +31,13 @@ public class HeroBuilder {
 				anim.addFrame(gameAssets.getSprite("hacker1"), 15);
 				anim.addFrame(gameAssets.getSprite("hacker2"), 15);
 				anim.addFrame(gameAssets.getSprite("hacker3"), 15);
+				
+				IAnimation animAtk = new Animation();
+				animAtk.addFrame(gameAssets.getSprite("hackerAtk1"), 15);
+				animAtk.addFrame(gameAssets.getSprite("hackerAtk2"), 15);
+				animAtk.addFrame(gameAssets.getSprite("hackerAtk3"), 15);
+				jogador.setAtkAnimation(animAtk);
+				
 				break;
 			case "engenheiro":
 				jogador = new Engenheiro();

@@ -15,6 +15,7 @@ public class Cell extends StaticEntity {
 	public Cell() {
 		this.entitys = new ArrayList<Entity>();
 		this.removeStack = new Stack<Entity>();
+		setType("Cell");
 	}
 	
 	public Cell(Sprite texture, boolean solida) {
@@ -22,6 +23,7 @@ public class Cell extends StaticEntity {
 		this.removeStack = new Stack<Entity>();
 		this.texture = texture;
 		setSolida(solida);
+		setType("Cell");
 	}
 	
 	public void setPosition(int x, int y) {

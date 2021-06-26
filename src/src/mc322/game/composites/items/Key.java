@@ -10,6 +10,7 @@ public class Key extends Item {
 	
 	public Key(Sprite texture) {
 		super(texture);
+		setType("Key");
 	}
 	
 	@Override
@@ -33,7 +34,9 @@ public class Key extends Item {
 	}
 	
 	public void interact(Entity ent) {
-		notifyListeners();
-		father.removeEntity(this);
+		if (ent.getType().equals("Hero")) {			
+			notifyListeners();
+			father.removeEntity(this);
+		}
 	} 
 }

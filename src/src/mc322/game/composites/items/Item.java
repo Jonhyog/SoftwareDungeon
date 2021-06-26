@@ -13,6 +13,7 @@ public abstract class Item extends StaticEntity implements ISubject, IObject {
 	
 	protected Item(Sprite texture) {
 		setTexture(texture);
+		setType("Item");
 		observers = new ArrayList<IObject>();
 	}
 	

@@ -104,5 +104,6 @@ public class GameControler {
 //			nextTurn();
 		}
 		key.clearKeys();
+		mouse.clearKeys();
 	}
 }

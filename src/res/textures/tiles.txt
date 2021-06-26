@@ -40,7 +40,7 @@ virus3 224 160 239 175 38 true
 erro1 160 192 175 207 39 true
 erro2 192 192 207 207 40 true
 erro3 224 192 239 207 41 true
-cafe 160 64 175 79 28 42 false
+cadeado 160 64 175 79 28 42 false
 coracao 176 64 191 79 29 43 false
 chave 192 64 207 79 30 44 false
 cursor 224 16 239 31 31 45 false
@@ -49,3 +49,9 @@ lInvertidoDiretio 80 48 95 63 47 true
 cEsquerdo 64 80 79 95 48 true
 cDireito 80 80 95 95 49 true
 fill 32 48 47 63 50 true
+cafe1 160 80 175 95 51 false
+cafe2 176 80 191 95 52 false
+cafe3 192 80 207 95 53 false
+hackerAtk1 160 221 175 239 54 false
+hackerAtk2 192 212 218 239 55 false
+hackerAtk3 224 221 247 239 56 false

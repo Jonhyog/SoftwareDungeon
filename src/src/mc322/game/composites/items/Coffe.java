@@ -7,9 +7,12 @@ import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
 
 public class Coffe extends Item {
-
+	
+	private static int healLifePoint = 3;
+	
 	public Coffe(Sprite texture) {
 		super(texture);
+		setType("Coffe");
 	}
 
 	@Override
@@ -24,11 +27,20 @@ public class Coffe extends Item {
 
 	@Override
 	public void render(Graphics2D g) {
-		g.drawImage(texture.getTexture(), x * 32, y * 32, texture.getSizeX(), texture.getSizeY(), null);
+//		g.drawImage(texture.getTexture(), x * 32, y * 32, texture.getSizeX(), texture.getSizeY(), null);
+		Sprite text = animation.getCurrentFrame();
+		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
 	}
 
 	@Override
 	public void update(KeyManager key) {
-		// TODO Auto-generated method stub
+		animation.tick();
 	}
+	
+	public void interact(Entity ent) {
+		if (ent.getType().equals("Hero")) {			
+			ent.updateLife(Coffe.healLifePoint);
+			father.removeEntity(this);
+		}
+	} 
 }

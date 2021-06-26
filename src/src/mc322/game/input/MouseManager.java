@@ -18,6 +18,10 @@ public class MouseManager implements MouseListener {
 		return clicksQueue.remove();
 	}
 	
+	public void clearKeys() {
+		clicksQueue.clear();
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Point pos = e.getPoint();

@@ -25,6 +25,7 @@ public class Dungeon extends StaticEntity implements IDungeon {
 		tiles = null;
 		this.i = 0;
 		this.j = 0;
+		setType("Dungeon");
 	}
 	
 	public void setSize(int x, int y) {

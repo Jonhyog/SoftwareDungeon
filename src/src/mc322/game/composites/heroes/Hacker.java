@@ -2,9 +2,7 @@ package mc322.game.composites.heroes;
 
 import java.awt.Graphics2D;
 
-import mc322.game.composites.Entity;
-import mc322.game.gfx.Sprite;
-import mc322.game.input.KeyManager;
+import mc322.game.composites.IEntity;
 
 public class Hacker extends Hero implements IHero {
 	
@@ -21,12 +19,12 @@ public class Hacker extends Hero implements IHero {
 	
 	// Fim de movimento com mouse
 	@Override
-	public void addEntity(Entity ent) {
+	public void addEntity(IEntity ent) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void removeEntity(Entity ent) {
+	public void removeEntity(IEntity ent) {
 		// TODO Auto-generated method stub
 	}
 
@@ -36,7 +34,7 @@ public class Hacker extends Hero implements IHero {
 	}
 
 	@Override
-	public void update(KeyManager key) {
-		super.update(key);
+	public void update() {
+		super.update();
 	}
 }

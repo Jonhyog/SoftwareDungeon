@@ -30,22 +30,30 @@ public class ItemBuilder {
 				anim.addFrame(gameAssets.getSprite("cafe2"), 15);
 				anim.addFrame(gameAssets.getSprite("cafe3"), 15);
 				
-				item.connectAnimation(anim);
 				item.setSolida(gameAssets.getSprite(name + "1").isSolid());
 				break;
 			case "chave":
 				item = new Key(gameAssets.getSprite(name));
 				item.setSolida(gameAssets.getSprite(name).isSolid());
+				anim.addFrame(gameAssets.getSprite(name), 10);
 				break;
 			case "portaTrancada":
 				item = new Door(gameAssets.getSprite(name));
 				item.setSolida(gameAssets.getSprite(name).isSolid());
+
+				IAnimation aberta = new Animation();
+				aberta.addFrame(gameAssets.getSprite("portaAberta"), 10);
+				anim.addFrame(gameAssets.getSprite(name), 10);
+				
+				item.connectAnimation("aberta", aberta);
 				break;
 			default:
 				if (item == null)
 					System.out.println("FIX-ME: Item Desconhecido " + name); // Lanca Excecao
 				break;
 		}
+		
+		item.connectAnimation("idle", anim);
 		return item;
 	}
 }

@@ -54,8 +54,8 @@ public class EnemyBuilder {
 					System.out.println("FIX-ME: Inimigo Desconhecido"); // Lanca Excecao
 				break;
 		}
-//		enemy.setSolida(gameAssets.getSprite(enemyName).isSolid());
-		enemy.connectAnimation(anim);
+//		enemy.setSolida(gameAssets.getSprite(enemyName + "1").isSolid()); Nao consigo atacar solidos
+		enemy.connectAnimation("idle", anim);
 		enemy.setMovement(new EnemyMovement());
 		return enemy;
 	}

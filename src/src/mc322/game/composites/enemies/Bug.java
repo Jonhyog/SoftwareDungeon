@@ -1,7 +1,6 @@
 package mc322.game.composites.enemies;
 
-import mc322.game.composites.Entity;
-import mc322.game.input.KeyManager;
+import mc322.game.composites.IEntity;
 
 public class Bug extends Enemy {
 	
@@ -13,17 +12,17 @@ public class Bug extends Enemy {
 	}
 	
 	@Override
-	public void addEntity(Entity ent) {
+	public void addEntity(IEntity ent) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void removeEntity(Entity ent) {
+	public void removeEntity(IEntity ent) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void update(KeyManager key) {
-		super.update(key);
+	public void update() {
+		super.update();
 	}
 }

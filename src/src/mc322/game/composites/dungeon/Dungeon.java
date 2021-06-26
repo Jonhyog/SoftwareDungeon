@@ -4,22 +4,22 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import mc322.game.composites.Cell;
-import mc322.game.composites.Entity;
+import mc322.game.composites.IEntity;
 import mc322.game.composites.StaticEntity;
 import mc322.game.composites.dungeon.exceptions.DungeonException;
 import mc322.game.composites.dungeon.exceptions.InvalidMovement;
 import mc322.game.composites.dungeon.exceptions.InvalidPosition;
-import mc322.game.input.KeyManager;
 import mc322.game.util.IPathfinder;
 
 public class Dungeon extends StaticEntity implements IDungeon {
 	private int i, j;
-	private Entity[][] tiles;
-	private Entity jogador;
+	private IEntity[][] tiles;
+	private IEntity jogador;
 	private boolean turnoJogador = true;
 	private boolean toggleTurnChange = false;
 	public boolean entitiesUpdating = false;
 	private IPathfinder pathFinder;
+	private int[] saida;
 	
 	public Dungeon () {
 		tiles = null;
@@ -28,13 +28,17 @@ public class Dungeon extends StaticEntity implements IDungeon {
 		setType("Dungeon");
 	}
 	
+	public void setSaida(int x, int y) {
+		this.saida = new int[] {x, y};
+	}
+	
 	public void setSize(int x, int y) {
 		this.x = x; // Posicao nao eh necessaria na caverna ent podemos usar x e y
 		this.y = y; // Mas x e y se referem a posicao da entidade
-		this.tiles = new Entity[y][x];
+		this.tiles = new IEntity[y][x];
 	}
 	
-	public void setJogador(Entity jogador) {
+	public void setJogador(IEntity jogador) {
 		this.jogador = jogador;
 	}
 	
@@ -70,7 +74,7 @@ public class Dungeon extends StaticEntity implements IDungeon {
 		return new int[] {x, y};
 	}
 	
-	public Entity getTile(int x, int y) throws DungeonException {
+	public IEntity getTile(int x, int y) throws DungeonException {
 		if (!isValidPosition(x, y))
 			throw new InvalidPosition("Posicao (" + x + ", " + y + ") eh invalida");
 		
@@ -86,11 +90,11 @@ public class Dungeon extends StaticEntity implements IDungeon {
 		return pathFinder.findPath(source, target, this);
 	}
 	
-	public void moveEntity(Entity ent, int[] target) throws DungeonException {
+	public void moveEntity(IEntity ent, int[] target) throws DungeonException {
 		int[] source = ent.getPosition();
 		// FIX-ME: CAST NAO DEVE SER FEITO - add QueueRemoval a Entity
 		Cell sourceTile = (Cell) getTile(source[0], source[1]);
-		Entity targetTile = getTile(target[0], target[1]);
+		IEntity targetTile = getTile(target[0], target[1]);
 		
 		if (targetTile.isSolid())
 			throw new InvalidMovement("Movimento para tile solido nao eh valido");
@@ -109,7 +113,7 @@ public class Dungeon extends StaticEntity implements IDungeon {
 	}
 	
 	@Override
-	public void addEntity(Entity ent) {
+	public void addEntity(IEntity ent) {
 		if (i >= y)
 			return;
 		tiles[i][j] = ent;
@@ -122,17 +126,15 @@ public class Dungeon extends StaticEntity implements IDungeon {
 	}
 
 	@Override
-	public void removeEntity(Entity ent) { // FIX-ME: CAST NAO DEVE SER FEITO
+	public void removeEntity(IEntity ent) { // FIX-ME: CAST NAO DEVE SER FEITO
 		int pos[] = ent.getPosition();
 		Cell cell = (Cell) getTile(pos[0], pos[1]);
 		cell.queueRemoval(ent);
 	}
 
 	@Override
-	public void setCallback(Entity father) {
-		this.father = father;
-		// NO JOGO TALVEZ NAO SEJA NECESSARIO
-		// SUBSTITUIR POR STUB?
+	public void setCallback(IDungeon root) {
+		this.root = root;
 	}
 
 	@Override
@@ -145,11 +147,11 @@ public class Dungeon extends StaticEntity implements IDungeon {
 	}
 
 	@Override
-	public void update(KeyManager key) {
+	public void update() {
 		toggleUpdating(false);
 		for (int posY = 0; posY < y; posY++) {
 			for (int posX = 0; posX < x; posX++) {
-				getTile(posX, posY).update(key);
+				getTile(posX, posY).update();
 			}
 		}
 		
@@ -160,8 +162,8 @@ public class Dungeon extends StaticEntity implements IDungeon {
 		nextTurn();
 	}
 	
-	public void handleAttack(Entity attacker, int[] target) {
-		Entity targetTile = getTile(target[0], target[1]);
+	public void handleAttack(IEntity attacker, int[] target) {
+		IEntity targetTile = getTile(target[0], target[1]);
 		
 //		if (targetTile.isSolid())
 //			throw new InvalidMovement("Movimento para tile solido nao eh valido");

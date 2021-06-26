@@ -56,11 +56,10 @@ public abstract class DynamicEntity extends StaticEntity {
 	
 	protected void askForPath(int pos[]) {
 		try {
-			IDungeon fatherCell = (IDungeon) father;
-			this.caminho = fatherCell.findPath(getPosition(), pos);
+			this.caminho = root.findPath(getPosition(), pos);
 			if (caminho == null || n >= range)
 				return;
-			fatherCell.toggleUpdating(true);
+			root.toggleUpdating(true);
 		} catch (Exception e) { // FIX-ME: Fazer excecoess
 			return;
 		}

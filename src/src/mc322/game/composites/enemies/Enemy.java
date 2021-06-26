@@ -1,13 +1,12 @@
 package mc322.game.composites.enemies;
 
 import java.awt.Graphics2D;
+import java.util.Set;
 
 import mc322.game.composites.DynamicEntity;
 import mc322.game.composites.Movement;
-import mc322.game.composites.dungeon.IDungeon;
 import mc322.game.composites.dungeon.exceptions.DungeonException;
 import mc322.game.gfx.Sprite;
-import mc322.game.input.KeyManager;
 
 public abstract class Enemy extends DynamicEntity {
 	protected Movement enemyMovement;
@@ -15,6 +14,7 @@ public abstract class Enemy extends DynamicEntity {
 	protected Enemy() {
 		setSolida(false);
 		setType("Enemy");
+		setCurrentAnim("idle");
 		this.ticks = 0;
 		this.n = 0;
 		this.minimunDistance = 1;
@@ -26,8 +26,7 @@ public abstract class Enemy extends DynamicEntity {
 	
 	private void attack(int[] target) {
 		System.out.println("Inimigo Atacando X: " + target[0] + " Y: " + target[0]);
-		IDungeon fatherCell = (IDungeon) father;
-		fatherCell.handleAttack(this, target);
+		root.handleAttack(this, target);
 		n = this.range;
 	}
 	
@@ -40,20 +39,19 @@ public abstract class Enemy extends DynamicEntity {
 	}
 	
 	public void render(Graphics2D g) {
-		Sprite text = animation.getCurrentFrame();
+		Sprite text = animations.get(currentAnim).getCurrentFrame();
 		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
 	}
 	
-	public void update(KeyManager key) {
-		IDungeon fatherCell = (IDungeon) father; //FIX-ME
-		animation.tick();
+	public void update() {
+		animations.get(currentAnim).tick();
 		
 		if (!isAlive()) {
-			father.removeEntity(this);
+			root.removeEntity(this);
 			return;
 		}
 		
-		if (fatherCell.isPlayerTurn()) {
+		if (root.isPlayerTurn()) {
 			resetPath();
 			return;
 		}
@@ -67,31 +65,38 @@ public abstract class Enemy extends DynamicEntity {
 		}
 		
 		if (knowsPath() && isInRange()) {
-			fatherCell.toggleUpdating(true);
+			root.toggleUpdating(true);
 			nextPosition();
 		} else if (isInAttackRange()){
 			attack(caminho.get(0));
-			fatherCell.toggleUpdating(true);
+			root.toggleUpdating(true);
 		} else {
-			askForPath(fatherCell.getPlayerPosition());
+			askForPath(root.getPlayerPosition());
 		}
 		ticks++;
+	}
+	
+	private void flipFrames(boolean value) {
+		Set<String> keys = animations.keySet();
+		
+        for(String key: keys){
+            animations.get(key).flipSprites(value);
+        }
 	}
 	
 	private void lookInDirection(int xSource, int xTarget) {
 		if (xTarget - xSource == 0)
 			return;
 		else if (xTarget - xSource > 0)
-			animation.flipSprites(false);
+			flipFrames(false);
 		else
-			animation.flipSprites(true);
+			flipFrames(true);
 	}
 	
 	public void move(int x, int y) {
 		try {
 			int[] lastPos = getPosition();
-			IDungeon fatherCell = (IDungeon) father; //FIX-ME
-			fatherCell.moveEntity(this, new int[] {x, y});
+			root.moveEntity(this, new int[] {x, y});
 			lookInDirection(lastPos[0], x);
 			n++;
 		} catch(DungeonException e){

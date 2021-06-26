@@ -1,8 +1,10 @@
 package mc322.game.factory;
 
 import mc322.game.composites.Cell;
-import mc322.game.composites.Entity;
+import mc322.game.composites.IEntity;
+import mc322.game.gfx.Animation;
 import mc322.game.gfx.Assets;
+import mc322.game.gfx.IAnimation;
 
 public class CellBuilder {
 	
@@ -17,10 +19,14 @@ public class CellBuilder {
 		return CellBuilder.defaultSolid;
 	}
 	
-	public static Entity buildCell(Assets gameAssets, int id) {
+	public static IEntity buildCell(Assets gameAssets, int id) {
 		Cell cell = new Cell();
 		String name = gameAssets.getName(id);
-		cell.setTexture(gameAssets.getSprite(name));
+		IAnimation anim = new Animation();
+		
+		anim.addFrame(gameAssets.getSprite(name), 10);
+//		cell.setTexture(gameAssets.getSprite(name));
+		cell.connectAnimation("idle", anim);
 		cell.setSolida(gameAssets.getSprite(name).isSolid());
 		
 		return cell;

@@ -6,91 +6,93 @@ import java.util.Stack;
 
 import mc322.game.composites.dungeon.IDungeon;
 import mc322.game.gfx.Sprite;
-import mc322.game.input.KeyManager;
 
 public class Cell extends StaticEntity {
-	private ArrayList<Entity> entitys;
-	private Stack<Entity> removeStack;
+	private ArrayList<IEntity> entitys;
+	private Stack<IEntity> removeStack;
 	
 	public Cell() {
-		this.entitys = new ArrayList<Entity>();
-		this.removeStack = new Stack<Entity>();
+		this.entitys = new ArrayList<IEntity>();
+		this.removeStack = new Stack<IEntity>();
 		setType("Cell");
+		setCurrentAnim("idle");
 	}
 	
 	public Cell(Sprite texture, boolean solida) {
-		this.entitys = new ArrayList<Entity>();
-		this.removeStack = new Stack<Entity>();
+		this.entitys = new ArrayList<IEntity>();
+		this.removeStack = new Stack<IEntity>();
 		this.texture = texture;
 		setSolida(solida);
 		setType("Cell");
+		setCurrentAnim("idle");
 	}
 	
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
-		for (Entity ent : entitys) {
+		for (IEntity ent : entitys) {
 			ent.setPosition(x, y);
 		}
 	}
 	
 	public boolean isSolid() {
-		for (Entity ent : entitys) {
+		for (IEntity ent : entitys) {
 			if (ent.isSolid())
 				return ent.isSolid();
 		}
 		return this.solid;
 	}
 	
-	public void moveEntity(Entity ent, int[] target){
-		IDungeon fatherDungeon = (IDungeon) father; // FIX
-		fatherDungeon.moveEntity(ent, target);
+	public void moveEntity(IEntity ent, int[] target){
+		root.moveEntity(ent, target);
 		removeStack.add(ent); // Remocao nao pode ocorrer durante iteracao 
 	}
 	
-	public void queueRemoval(Entity ent) {
+	public void queueRemoval(IEntity ent) {
 		removeStack.add(ent);
 	}
 	
 	@Override
-	public void addEntity(Entity ent) {
-		for (Entity entidade : entitys) {
+	public void addEntity(IEntity ent) {
+		for (IEntity entidade : entitys) {
 			entidade.interact(ent);
 		}
 		entitys.add(ent);
-		ent.setCallback(this.father); // FIX: DEVE TER MANEIRA RECURSIVA SE ESCALAR NOS
+		ent.setCallback(this.root);
 	}
 
 	@Override
-	public void removeEntity(Entity ent) {
+	public void removeEntity(IEntity ent) {
 		entitys.remove(ent);
 		// FIX-ME: TRATAR ERRO CASO TENTE REMOVER ENT N PRESENTE
 	}
 
 	@Override
 	public void render(Graphics2D g) {
-		g.drawImage(texture.getTexture(), x * 32, y * 32, texture.getSizeX(), texture.getSizeY(), null);
-		for (Entity ent : entitys) {
+		Sprite text = animations.get(currentAnim).getCurrentFrame();
+		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
+		
+		for (IEntity ent : entitys) {
 			ent.render(g);
 		}	
 	}
 
 	@Override
-	public void update(KeyManager key) {
+	public void update() {
 		if (!removeStack.empty()) {
-			for (Entity ent : removeStack) {
+			for (IEntity ent : removeStack) {
 				removeEntity(ent);
 			}
 			removeStack.clear();
 		}
 		
-		for (Entity ent : entitys) {
-			ent.update(key);
+		for (IEntity ent : entitys) {
+			ent.update();
 		}		
 	}
 	
 	public void updateLife(int n) {
-		for (Entity ent : entitys) {
+		for (IEntity ent : entitys) {
 			ent.updateLife(n);
 		}
 	}

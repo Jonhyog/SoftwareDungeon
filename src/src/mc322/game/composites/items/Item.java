@@ -1,31 +1,24 @@
 package mc322.game.composites.items;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-import mc322.game.composites.Entity;
+import mc322.game.composites.IEntity;
 import mc322.game.composites.StaticEntity;
 import mc322.game.gfx.Sprite;
 import mc322.game.util.observer.*;
 
 public abstract class Item extends StaticEntity implements ISubject, IObject {
 	private ArrayList<IObject> observers;
-	private Sprite altTexture;
 	
 	protected Item(Sprite texture) {
 		setTexture(texture);
 		setType("Item");
+		setCurrentAnim("idle");
 		observers = new ArrayList<IObject>();
 	}
 	
-	public void setAlternativetexture(Sprite altTexture) {
-		this.altTexture = altTexture;
-	}
-	
-	protected void changeTexture() {
-		Sprite temp = texture;
-		texture = altTexture;
-		altTexture = temp;
-	}
+	public abstract void actionPerformed();
 	
 	public void addListener(IObject listener) {
 		observers.add(listener);
@@ -41,12 +34,13 @@ public abstract class Item extends StaticEntity implements ISubject, IObject {
 		}
 	}
 	
-	public void actionPerformed() {
-		setSolida(!solid);
-		changeTexture();
+	public void render(Graphics2D g) {
+		Sprite text = animations.get(currentAnim).getCurrentFrame();
+		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
 	}
 	
-	public void interact(Entity ent) {
+	
+	public void interact(IEntity ent) {
 		notifyListeners();
 	}
 }

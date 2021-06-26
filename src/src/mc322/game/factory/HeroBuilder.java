@@ -36,8 +36,7 @@ public class HeroBuilder {
 				animAtk.addFrame(gameAssets.getSprite("hackerAtk1"), 15);
 				animAtk.addFrame(gameAssets.getSprite("hackerAtk2"), 15);
 				animAtk.addFrame(gameAssets.getSprite("hackerAtk3"), 15);
-				jogador.setAtkAnimation(animAtk);
-				
+				jogador.connectAnimation("atk", animAtk);
 				break;
 			case "engenheiro":
 				jogador = new Engenheiro();
@@ -63,7 +62,7 @@ public class HeroBuilder {
 				break;
 		}
 		// jogador.setSolida(gameAssets.getSprite(hero).isSolid());
-		jogador.connectAnimation(anim);
+		jogador.connectAnimation("idle", anim);
 		jogador.setMovement(new HeroMovement());
 		return jogador;
 	}

@@ -1,14 +1,17 @@
 package mc322.game.composites;
 
+import java.util.Hashtable;
+
+import mc322.game.composites.dungeon.IDungeon;
 import mc322.game.gfx.IAnimation;
 import mc322.game.gfx.Sprite;
 
-public abstract class StaticEntity implements Entity {
+public abstract class StaticEntity implements IEntity {
 	protected int x, y;
-	protected Entity father;
+	protected IDungeon root;
 	protected Sprite texture;
-	protected IAnimation animation;
-	protected IAnimation animAtk;
+	protected Hashtable<String, IAnimation> animations = null; // FIX
+	protected String currentAnim;
 	protected boolean isAttacking = false;
 	protected String type;
 	protected boolean solid;
@@ -17,16 +20,24 @@ public abstract class StaticEntity implements Entity {
 		this.texture = texture;
 	}
 	
-	public void setAtkAnimation(IAnimation animAtk) {
-		this.animAtk = animAtk;
+	public void connectAnimation(String name, IAnimation anim) {
+		if (animations == null) {
+			animations = new Hashtable<String, IAnimation>();
+		}
+		animations.put(name, anim);
+		anim.flipSprites(false);
+	}
+	
+	protected void setCurrentAnim(String name) {
+		this.currentAnim = name;
 	}
 	
 	protected void setAttacking(boolean state) {
 		this.isAttacking = state;
 	}
 	
-	public void setCallback(Entity father) {
-		this.father = father;
+	public void setCallback(IDungeon root) {
+		this.root = root;
 	}
 	
 	protected void setType(String type) {
@@ -62,12 +73,7 @@ public abstract class StaticEntity implements Entity {
 		return 0;
 	}
 	
-	public void interact(Entity ent) {
+	public void interact(IEntity ent) {
 		return;
-	}
-	
-	public void connectAnimation(IAnimation animation) {
-		this.animation = animation;
-		animation.flipSprites(false);
 	}
 }

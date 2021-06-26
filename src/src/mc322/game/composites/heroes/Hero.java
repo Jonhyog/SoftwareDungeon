@@ -1,13 +1,12 @@
 package mc322.game.composites.heroes;
 
 import java.awt.Graphics2D;
+import java.util.Set;
 
 import mc322.game.composites.DynamicEntity;
 import mc322.game.composites.Movement;
-import mc322.game.composites.dungeon.IDungeon;
 import mc322.game.composites.dungeon.exceptions.DungeonException;
 import mc322.game.gfx.Sprite;
-import mc322.game.input.KeyManager;
 
 public abstract class Hero extends DynamicEntity {
 	protected Movement heroMovement;
@@ -15,6 +14,7 @@ public abstract class Hero extends DynamicEntity {
 	protected Hero() {
 		setSolida(false);
 		setType("Hero");
+		setCurrentAnim("idle");
 	}
 	
 	public void setMovement(Movement heroMovement) {
@@ -22,13 +22,8 @@ public abstract class Hero extends DynamicEntity {
 	}
 	
 	public void render(Graphics2D g) {
-		Sprite text;
+		Sprite text = animations.get(currentAnim).getCurrentFrame();
 		int fatorX = 0, fatorY = 0;
-		
-		if (this.isAttacking)
-			text = this.animAtk.getCurrentFrame();
-		else
-			text = animation.getCurrentFrame();
 		
 		if (text.getSizeX() > 32)
 			fatorX = (text.getSizeX() - 32); // FIX-ME: fatorX = (text.getSizeX() - 32) * isFlipado ? -1 : 1
@@ -39,31 +34,30 @@ public abstract class Hero extends DynamicEntity {
 	}
 	
 	private void passTurn() {
-		IDungeon fatherCell = (IDungeon) father;
-		fatherCell.requestNextTurn();
+		root.requestNextTurn();
 		resetPath();
 		setAttacking(false);
+		setCurrentAnim("idle");
 	}
 	
-	public void update(KeyManager key) {
-		IDungeon fatherCell = (IDungeon) father; //FIX-ME
-		animation.tick();
+	public void update() {
+		animations.get(currentAnim).tick();
 		
 		if (this.isAttacking) {
-			this.animAtk.tick();
-			if (animAtk.finishedLoop()) {
+//			this.animAtk.tick();
+			if (animations.get(currentAnim).finishedLoop()) {
 				passTurn();
 			}
 		}
 		
-		if (!fatherCell.isPlayerTurn()) {
+		if (!root.isPlayerTurn()) {
 			resetPath();
 			return;
 		}
 		
 		if (knowsPath() && isInRange()) {
 			ticks++;
-			fatherCell.toggleUpdating(true);
+			root.toggleUpdating(true);
 			nextPosition();
 		}
 		
@@ -103,29 +97,34 @@ public abstract class Hero extends DynamicEntity {
 		}
 		System.out.println("Atacando X: " + target[0] + " Y: " + target[1]);
 		setAttacking(true);
-		IDungeon fatherCell = (IDungeon) father;
-		fatherCell.handleAttack(this, target);
+		setCurrentAnim("atk");
+		root.handleAttack(this, target);
 		resetPath();
 		
+	}
+	
+	private void flipFrames(boolean value) {
+		Set<String> keys = animations.keySet();
+		
+        for(String key: keys){
+            animations.get(key).flipSprites(value);
+        }
 	}
 	
 	private void lookInDirection(int xSource, int xTarget) {
 		if (xTarget - xSource == 0) {
 			return;			
 		} else if (xTarget - xSource > 0) {
-			animation.flipSprites(false);
-			animAtk.flipSprites(false);
+			flipFrames(false);
 		} else {
-			animation.flipSprites(true);
-			animAtk.flipSprites(true);
+			flipFrames(true);
 		}
 	}
 	
 	public void move(int x, int y) {
 		try {
 			int[] lastPos = getPosition();
-			IDungeon fatherCell = (IDungeon) father;
-			fatherCell.moveEntity(this, new int[] {x, y});
+			root.moveEntity(this, new int[] {x, y});
 			setPosition(x, y);
 			lookInDirection(lastPos[0], x);
 			n++;

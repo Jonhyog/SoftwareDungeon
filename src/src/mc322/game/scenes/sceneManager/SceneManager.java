@@ -80,6 +80,6 @@ public class SceneManager {
 	}
 	
 	public void update(KeyManager key) {
-		currentScene.update(key);
+		currentScene.update();
 	}
 }

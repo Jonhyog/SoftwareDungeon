@@ -8,13 +8,14 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import mc322.game.composites.Entity;
+import mc322.game.composites.IEntity;
 import mc322.game.composites.GameControler;
-import mc322.game.composites.dungeon.Dungeon;
+import mc322.game.composites.dungeon.IDungeon;
 import mc322.game.composites.heroes.IHero;
 import mc322.game.composites.items.Item;
 import mc322.game.factory.CellBuilder;
 import mc322.game.factory.DungeonBuilder;
+import mc322.game.factory.DungeonHandler;
 import mc322.game.factory.EnemyBuilder;
 import mc322.game.factory.HeroBuilder;
 import mc322.game.factory.ItemBuilder;
@@ -32,7 +33,7 @@ public class GameScene extends JPanel implements Scene {
 	private SceneManager sceneMan;
 	private int width, height;
 	private SceneControl sceneCtrl;
-	private Dungeon dg;
+	private IDungeon dg;
 	private GameControler gameCtrl;
 	
 	public GameScene(int width, int height) {
@@ -67,10 +68,8 @@ public class GameScene extends JPanel implements Scene {
 	}
 	
 	@Override
-	public void update(KeyManager key) {
-		dg.update(key);
-		//FIX
-		gameCtrl.connectKeyInputSource(key);
+	public void update() {
+		dg.update();
 		gameCtrl.update();
 		render();
 	}
@@ -84,37 +83,34 @@ public class GameScene extends JPanel implements Scene {
 	public void setCallback(SceneManager sceneMan) {
 		this.sceneMan = sceneMan;
 	}
-
-	@Override
-	public void initScene(Assets gameAssets) {
-		DungeonBuilder builder = new DungeonBuilder();
-		builder.setDungeonMap("res/dungeons/dungeon2.csv");
-		builder.setSep(";");
-		builder.loadDungeon(gameAssets);
-		
-		this.gameCtrl = new GameControler();
-		
-		int[] size = builder.getSize();
-		this.dg = new Dungeon();
-		dg.setSize(size[0], size[1]);
+	
+	private IDungeon initDungeon(DungeonHandler dungeonHandler, Assets gameAssets) {
+		int[] size = dungeonHandler.getSize();
+		this.dg = DungeonBuilder.buildDungeon(dungeonHandler.getSize(), dungeonHandler.getSaida());
 		System.out.println("\tDungeon (" + size[0] + ", " + size[1] + "): Loading");
 		
-		Entity cell;
+		IEntity cell;
 		for (int i = 0; i < size[1]; i++) {
 			for (int j = 0; j < size[0]; j++) {
-				int id = builder.nextCell();
+				int id = dungeonHandler.nextCell();
 				String name = gameAssets.getName(id);
 				cell = CellBuilder.buildCell(gameAssets, id);
 				cell.setTexture(gameAssets.getSprite(name));
 				cell.setSolida(gameAssets.getSprite(name).isSolid());
-				cell.setPosition(j, i);				
+				cell.setPosition(j, i);
 				dg.addEntity(cell);
 			}
 		}
 		
-		ArrayList<String[]> entidades = builder.getEntidade();
+		return dg;
+	}
+	
+	private void addEntities2Dungeon(DungeonHandler dungeonHandler, IDungeon dg, Assets gameAssets) {
+		IEntity cell;
+		ArrayList<String[]> entidades = dungeonHandler.getEntidade();
+		
 		for (String[] entidade : entidades) {
-			Entity ent = null;
+			IEntity ent = null;
 			String name = entidade[0];
 			int x = Integer.parseInt(entidade[1]);
 			int y = Integer.parseInt(entidade[2]);
@@ -134,7 +130,6 @@ public class GameScene extends JPanel implements Scene {
 					chave.setPosition(Integer.parseInt(entidade[4]), Integer.parseInt(entidade[5]));
 					dg.getTile(Integer.parseInt(entidade[4]), Integer.parseInt(entidade[5])).addEntity(chave);
 					chave.addListener(item);
-					item.setAlternativetexture(gameAssets.getSprite("portaAberta"));
 				}
 				ent = item;
 			}
@@ -144,14 +139,30 @@ public class GameScene extends JPanel implements Scene {
 				cell.addEntity(ent);
 			}
 		}
+	}
+	
+	@Override
+	public void initScene(Assets gameAssets) {
+		DungeonHandler dungeonHandler = new DungeonHandler();
+		dungeonHandler.setDungeonMap("res/dungeons/dungeon2.csv");
+		dungeonHandler.setSep(";");
+		dungeonHandler.loadDungeon(gameAssets);
 		
+		// Inicia Tiles
+		this.dg = initDungeon(dungeonHandler, gameAssets);
+		this.gameCtrl = new GameControler();
+		
+		// Adiciona Entidades
+		addEntities2Dungeon(dungeonHandler, dg, gameAssets);
+		
+		// Conecta PathFinder
 		IPathfinder pathFinder = new AStar();
 		dg.connectPathfinder(pathFinder);
 		gameCtrl.setDungeon(dg);
+		
 		System.out.println("\tCaverna: ok");
 		System.out.println("GameScene: ok");
 	
 	}
-	
 	
 }

@@ -2,9 +2,8 @@ package mc322.game.composites.heroes;
 
 import java.awt.Graphics2D;
 
-import mc322.game.composites.Entity;
+import mc322.game.composites.IEntity;
 import mc322.game.gfx.Sprite;
-import mc322.game.input.KeyManager;
 
 public class Estagiario extends Hero implements IHero {
 	public Estagiario() {
@@ -15,23 +14,23 @@ public class Estagiario extends Hero implements IHero {
 	}
 	
 	@Override
-	public void addEntity(Entity ent) {
+	public void addEntity(IEntity ent) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void removeEntity(Entity ent) {
+	public void removeEntity(IEntity ent) {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void render(Graphics2D g) {
-		Sprite text = animation.getCurrentFrame();
+		Sprite text = animations.get(currentAnim).getCurrentFrame();
 		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
 	}
 
 	@Override
-	public void update(KeyManager key) {
-		super.update(key);
+	public void update() {
+		super.update();
 	}
 }

@@ -9,6 +9,6 @@ public interface Scene {
 	public void setCallback(SceneManager sceneMan);
 	public void initScene(Assets gameAssets);
 	public void connectInputSource(KeyManager key, MouseManager mouse);
-	public void update(KeyManager key);
+	public void update();
 	public void render();
 }

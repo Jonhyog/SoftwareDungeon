@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.PriorityQueue;
 
-import mc322.game.composites.Entity;
+import mc322.game.composites.IEntity;
 import mc322.game.composites.dungeon.Dungeon;
 
 public class AStar implements IPathfinder {
@@ -105,7 +105,7 @@ public class AStar implements IPathfinder {
 			for (Node vizinho : vizinhos) {
 				pos = vizinho.getPosition();
 				
-				Entity celula = dg.getTile(pos[0], pos[1]); // FIX-ME
+				IEntity celula = dg.getTile(pos[0], pos[1]); // FIX-ME
 				if (visitados[pos[1]][pos[0]] || celula.isSolid())
 					continue;
 				

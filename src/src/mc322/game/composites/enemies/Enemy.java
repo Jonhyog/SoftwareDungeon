@@ -61,6 +61,10 @@ public abstract class Enemy extends DynamicEntity {
 			return;
 		}
 		
+		if (caminho != null && n == caminho.size()) {
+			return;
+		}
+		
 		if (knowsPath() && isInRange()) {
 			fatherCell.toggleUpdating(true);
 			nextPosition();
@@ -73,10 +77,21 @@ public abstract class Enemy extends DynamicEntity {
 		ticks++;
 	}
 	
+	private void lookInDirection(int xSource, int xTarget) {
+		if (xTarget - xSource == 0)
+			return;
+		else if (xTarget - xSource > 0)
+			animation.flipSprites(false);
+		else
+			animation.flipSprites(true);
+	}
+	
 	public void move(int x, int y) {
 		try {
+			int[] lastPos = getPosition();
 			IDungeon fatherCell = (IDungeon) father; //FIX-ME
 			fatherCell.moveEntity(this, new int[] {x, y});
+			lookInDirection(lastPos[0], x);
 			n++;
 		} catch(DungeonException e){
 			System.out.println(e.getMessage());

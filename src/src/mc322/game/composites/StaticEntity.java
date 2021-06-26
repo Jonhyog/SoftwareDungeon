@@ -49,5 +49,6 @@ public abstract class StaticEntity implements Entity {
 	
 	public void connectAnimation(IAnimation animation) {
 		this.animation = animation;
+		animation.flipSprites(false);
 	}
 }

@@ -58,7 +58,7 @@ public abstract class DynamicEntity extends StaticEntity {
 		try {
 			IDungeon fatherCell = (IDungeon) father;
 			this.caminho = fatherCell.findPath(getPosition(), pos);
-			if (caminho == null || caminho.size() < 2 || n >= range)
+			if (caminho == null || n >= range)
 				return;
 			fatherCell.toggleUpdating(true);
 		} catch (Exception e) { // FIX-ME: Fazer excecoess

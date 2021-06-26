@@ -25,6 +25,12 @@ public abstract class Hero extends DynamicEntity {
 		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
 	}
 	
+	private void passTurn() {
+		IDungeon fatherCell = (IDungeon) father;
+		fatherCell.requestNextTurn();
+		resetPath();
+	}
+	
 	public void update(KeyManager key) {
 		IDungeon fatherCell = (IDungeon) father; //FIX-ME
 		animation.tick();
@@ -39,6 +45,13 @@ public abstract class Hero extends DynamicEntity {
 			fatherCell.toggleUpdating(true);
 			nextPosition();
 		}
+		
+		if (n == this.range)
+			passTurn();
+		
+		if (caminho != null && n == caminho.size()) {
+			passTurn();
+		}
 	}
 	
 	public void receiveMovement(int chave) {
@@ -50,27 +63,42 @@ public abstract class Hero extends DynamicEntity {
 		askForPath(target);
 	}
 	
+	private boolean isReachable() {
+		return range >= caminho.size();
+	}
+	
+	protected void askForPath(int pos[]) {
+		super.askForPath(pos);
+		if (caminho != null && !isReachable()) {
+			caminho = null;
+			System.out.println("Nao alcanço essa posicão");
+		}
+	}
+	
 	public void attack(int[] target) {
 		System.out.println("Atacando X: " + target[0] + " Y: " + target[1]);
 		IDungeon fatherCell = (IDungeon) father;
 		fatherCell.handleAttack(this, target);
-		n++;
-		if (n == this.range) {
-			fatherCell.requestNextTurn();
-			n = 0;
-		}
+		passTurn();
+	}
+	
+	private void lookInDirection(int xSource, int xTarget) {
+		if (xTarget - xSource == 0)
+			return;
+		else if (xTarget - xSource > 0)
+			animation.flipSprites(false);
+		else
+			animation.flipSprites(true);
 	}
 	
 	public void move(int x, int y) {
 		try {
+			int[] lastPos = getPosition();
 			IDungeon fatherCell = (IDungeon) father;
 			fatherCell.moveEntity(this, new int[] {x, y});
 			setPosition(x, y);
+			lookInDirection(lastPos[0], x);
 			n++;
-			if (n == this.range) {
-				fatherCell.requestNextTurn();
-				n = 0;
-			}
 		} catch(DungeonException e){
 			System.out.println(e.getMessage());
 			return;

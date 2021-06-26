@@ -22,19 +22,39 @@ public abstract class Hero extends DynamicEntity {
 	}
 	
 	public void render(Graphics2D g) {
-		Sprite text = animation.getCurrentFrame();
-		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
+		Sprite text;
+		int fatorX = 0, fatorY = 0;
+		
+		if (this.isAttacking)
+			text = this.animAtk.getCurrentFrame();
+		else
+			text = animation.getCurrentFrame();
+		
+		if (text.getSizeX() > 32)
+			fatorX = (text.getSizeX() - 32); // FIX-ME: fatorX = (text.getSizeX() - 32) * isFlipado ? -1 : 1
+		if (text.getSizeY() > 32)
+			fatorY = text.getSizeX() - 32;
+		
+		g.drawImage(text.getTexture(), x * 32 - fatorX, y * 32 - fatorY, text.getSizeX(), text.getSizeY(), null);
 	}
 	
 	private void passTurn() {
 		IDungeon fatherCell = (IDungeon) father;
 		fatherCell.requestNextTurn();
 		resetPath();
+		setAttacking(false);
 	}
 	
 	public void update(KeyManager key) {
 		IDungeon fatherCell = (IDungeon) father; //FIX-ME
 		animation.tick();
+		
+		if (this.isAttacking) {
+			this.animAtk.tick();
+			if (animAtk.finishedLoop()) {
+				passTurn();
+			}
+		}
 		
 		if (!fatherCell.isPlayerTurn()) {
 			resetPath();
@@ -72,24 +92,33 @@ public abstract class Hero extends DynamicEntity {
 		super.askForPath(pos);
 		if (caminho != null && !isReachable()) {
 			caminho = null;
-			System.out.println("Nao alcanço essa posicão");
+			System.out.println("Nao alcanço essa posicao");
 		}
 	}
 	
 	public void attack(int[] target) {
+		askForPath(target);
+		if (caminho == null || caminho.size() > this.range) {
+			return;
+		}
 		System.out.println("Atacando X: " + target[0] + " Y: " + target[1]);
+		setAttacking(true);
 		IDungeon fatherCell = (IDungeon) father;
 		fatherCell.handleAttack(this, target);
-		passTurn();
+		resetPath();
+		
 	}
 	
 	private void lookInDirection(int xSource, int xTarget) {
-		if (xTarget - xSource == 0)
-			return;
-		else if (xTarget - xSource > 0)
+		if (xTarget - xSource == 0) {
+			return;			
+		} else if (xTarget - xSource > 0) {
 			animation.flipSprites(false);
-		else
+			animAtk.flipSprites(false);
+		} else {
 			animation.flipSprites(true);
+			animAtk.flipSprites(true);
+		}
 	}
 	
 	public void move(int x, int y) {

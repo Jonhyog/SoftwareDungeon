@@ -1,7 +1,6 @@
 package mc322.game.gfx;
 
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -9,7 +8,7 @@ public class Animation implements IAnimation {
 	private ArrayList<Sprite> frames;
 	private ArrayList<Integer> times;
 	private int current, n, ticks;
-	private boolean flip = false;
+	private boolean flip = false, finished = false;
 	
 	public Animation(){
 		frames = new ArrayList<Sprite>();
@@ -45,8 +44,10 @@ public class Animation implements IAnimation {
 	private void nextFrame() {
 		ticks = 0;
 		current++;
-		if (current == n)
+		if (current == n) {
+			finished = true;
 			current = 0;
+		}
 	}
 	
 	public void addFrame(Sprite frame, int time) {
@@ -65,9 +66,17 @@ public class Animation implements IAnimation {
 		this.flip = flip;
 	}
 	
+	public boolean finishedLoop() {
+		return finished;
+	}
+	
 	public void tick() {
 		ticks++;
+		finished = false;
 		if (ticks == times.get(current))
 			nextFrame();
+		if (current == n) {
+			finished = true;
+		}
 	}
 }

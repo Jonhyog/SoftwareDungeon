@@ -8,11 +8,21 @@ public abstract class StaticEntity implements Entity {
 	protected Entity father;
 	protected Sprite texture;
 	protected IAnimation animation;
+	protected IAnimation animAtk;
+	protected boolean isAttacking = false;
 	protected String type;
 	protected boolean solid;
 	
 	public void setTexture(Sprite texture) {
 		this.texture = texture;
+	}
+	
+	public void setAtkAnimation(IAnimation animAtk) {
+		this.animAtk = animAtk;
+	}
+	
+	protected void setAttacking(boolean state) {
+		this.isAttacking = state;
 	}
 	
 	public void setCallback(Entity father) {

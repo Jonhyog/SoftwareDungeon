@@ -43,9 +43,10 @@ public class GameScene extends JPanel implements Scene {
 	private int currentLevel = 0;
 	private boolean initialized = false;
 	private String[] levels = {
-			"res/dungeons/dungeon4.csv",
+			"res/dungeons/dungeon.csv",
 			"res/dungeons/dungeon2.csv",
-			"res/dungeons/dungeon3.csv"};
+			"res/dungeons/dungeon3.csv",
+			"res/dungeons/dungeon4.csv"};
 	private JLabel score;
 	
 	public GameScene(int width, int height) {
@@ -218,13 +219,6 @@ public class GameScene extends JPanel implements Scene {
 		IPathfinder pathFinder = new AStar();
 		dg.connectPathfinder(pathFinder);
 		gameCtrl.setDungeon(dg);
-		
-		// Display da Pontuacao
-		score = new JLabel("Points: " + Integer.toString(GameStats.getScore()));
-		score.setBounds(64, 670, 100, 30);
-		score.setForeground(new Color (255, 255, 255));
-		score.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-		add(score);
 	}
 	
 	
@@ -232,6 +226,13 @@ public class GameScene extends JPanel implements Scene {
 	public void initScene() {
 		loadLevel();
 		
+		// Display da Pontuacao
+		score = new JLabel("Points: " + Integer.toString(GameStats.getScore()));
+		score.setBounds(64, 670, 200, 30);
+		score.setForeground(new Color (255, 255, 255));
+		score.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+		add(score);
+				
 		System.out.println("\tCaverna: ok");
 		System.out.println("GameScene: ok");
 		

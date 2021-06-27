@@ -88,18 +88,18 @@ public class SelectionScene extends JPanel implements Scene, ActionListener {
 		JButton bttEng, bttTi, bttHac, bttEst;
 		
 		// Selecao do Engenheiro
-		bttEng = new JButton("Engenheiro");
+		bttEng = new JButton("Tecnico");
 		bttEng.setBounds(80, 272, 144, 48);
 		bttEng.addActionListener(this);
-		bttEng.setActionCommand("engenheiro");
+		bttEng.setActionCommand("tecnico");
 		bttEng.setFocusable(false);
 		super.add(bttEng);
 		
 		// Selecao do Tecnico
-		bttTi = new JButton("Tecnico");
+		bttTi = new JButton("Engenheiro");
 		bttTi.setBounds(416, 272, 144, 48);
 		bttTi.addActionListener(this);
-		bttTi.setActionCommand("tecnico");
+		bttTi.setActionCommand("engenheiro");
 		bttTi.setFocusable(false);
 		super.add(bttTi);
 		

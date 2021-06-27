@@ -41,6 +41,10 @@ public abstract class DynamicEntity extends StaticEntity {
 		return n < range;
 	}
 	
+	protected boolean isReachable() {
+		return range >= caminho.size();
+	}
+	
 	protected void nextPosition() {
 		if (ticks % 40 != 0) {
 			return;

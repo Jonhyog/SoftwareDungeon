@@ -84,10 +84,6 @@ public abstract class Hero extends DynamicEntity implements IHero {
 		askForPath(target);
 	}
 	
-	private boolean isReachable() {
-		return range >= caminho.size();
-	}
-	
 	protected void askForPath(int pos[]) {
 		super.askForPath(pos);
 		if (caminho != null && !isReachable()) {

@@ -45,6 +45,18 @@ public abstract class Enemy extends DynamicEntity {
 		return false;
 	}
 	
+	protected boolean isReachable() {
+		return range * 3 >= caminho.size();
+	}
+	
+//	protected void askForPath(int pos[]) {
+//		super.askForPath(pos);
+//		if (caminho != null && !isReachable()) {
+//			caminho = null;
+//			System.out.println("Nao alcanco essa posicao");
+//		}
+//	}
+	
 	public void render(Graphics2D g) {
 		Sprite text = animations.get(currentAnim).getCurrentFrame();
 		int fatorX = 0, fatorY = 0;
@@ -87,6 +99,9 @@ public abstract class Enemy extends DynamicEntity {
 		if (caminho != null && n == caminho.size()) {
 			return;
 		}
+		
+		if (caminho != null && !isReachable())
+			return;
 		
 		if (knowsPath() && isInRange()) {
 			root.toggleUpdating(true);

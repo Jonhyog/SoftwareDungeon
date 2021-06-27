@@ -11,6 +11,7 @@ import mc322.game.util.GameStats;
 
 public abstract class Enemy extends DynamicEntity {
 	protected Movement enemyMovement;
+	protected boolean attacked = false;
 	
 	protected Enemy() {
 		setSolida(false);
@@ -23,6 +24,11 @@ public abstract class Enemy extends DynamicEntity {
 	
 	public void setMovement(Movement enemyMovement) {
 		this.enemyMovement = enemyMovement;
+	}
+	
+	protected void resetPath() {
+		super.resetPath();
+		this.attacked = false;
 	}
 	
 	private void attack(int[] target) {
@@ -64,8 +70,8 @@ public abstract class Enemy extends DynamicEntity {
 			if (animations.get(currentAnim).finishedLoop()) {
 				setAttacking(false);
 				setCurrentAnim("idle");
-				resetPath();
 			}
+			root.toggleUpdating(true);
 			return;
 		}
 		
@@ -74,7 +80,7 @@ public abstract class Enemy extends DynamicEntity {
 			return;
 		}
 		
-		if (n == this.range) {
+		if (n == this.range || attacked) {
 			return;
 		}
 		
@@ -91,6 +97,7 @@ public abstract class Enemy extends DynamicEntity {
 			
 			lookInDirection(pos[0], target[0]);
 			attack(target);
+			this.attacked = true;
 			setAttacking(true);
 			setCurrentAnim("atk");
 			root.toggleUpdating(true);

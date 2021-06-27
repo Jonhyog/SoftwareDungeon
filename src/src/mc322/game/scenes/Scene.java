@@ -7,6 +7,7 @@ import mc322.game.scenes.sceneManager.SceneManager;
 
 public interface Scene {
 	public void setCallback(SceneManager sceneMan);
+	public void connectAssets(Assets gameAssets);
 	public void initScene(Assets gameAssets);
 	public void connectInputSource(KeyManager key, MouseManager mouse);
 	public void update();

@@ -19,6 +19,7 @@ public class MenuScene extends JPanel implements Scene, ActionListener{
 	
 	private SceneManager sceneMan;
 	private int width, height;
+	private Assets gameAssets;
 	
 	public MenuScene(int width, int height) {
 		super();
@@ -36,6 +37,10 @@ public class MenuScene extends JPanel implements Scene, ActionListener{
 	}
 	
 	public void connectInputSource(KeyManager key, MouseManager mouse) {
+	}
+	
+	public void connectAssets(Assets gameAssets) {
+		this.gameAssets = gameAssets;
 	}
 	
 	public void paintComponent(Graphics g) {

@@ -32,6 +32,10 @@ public class Dungeon extends StaticEntity implements IDungeon {
 		this.saida = new int[] {x, y};
 	}
 	
+	public int[] getSaida() {
+		return saida;
+	}
+	
 	public void setSize(int x, int y) {
 		this.x = x; // Posicao nao eh necessaria na caverna ent podemos usar x e y
 		this.y = y; // Mas x e y se referem a posicao da entidade

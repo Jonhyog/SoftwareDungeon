@@ -8,7 +8,7 @@ import mc322.game.composites.Movement;
 import mc322.game.composites.dungeon.exceptions.DungeonException;
 import mc322.game.gfx.Sprite;
 
-public abstract class Hero extends DynamicEntity {
+public abstract class Hero extends DynamicEntity implements IHero {
 	protected Movement heroMovement;
 	
 	protected Hero() {

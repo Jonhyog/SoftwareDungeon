@@ -62,6 +62,7 @@ public class Game {
 		
 		// GameScene
 		cena = new GameScene(width, height);
+		cena.connectAssets(gameAssets);
 		cena.initScene(gameAssets);
 		sceneMan.addScene("Jogo", cena);
 	}
@@ -78,7 +79,6 @@ public class Game {
 		main = new GameWindow(title, width, height);
 		key = new KeyManager();
 		mouse = new MouseManager();
-		// mouse = new MouseManager();
 		main.addKeyListener(key);
 		main.addMouseListener(mouse);
 		
@@ -96,7 +96,7 @@ public class Game {
 		clock.start();
 		
 		System.out.println("Iniciando loop");
-		while (running) { // Adicionar um clock
+		while (running) {
 			if (clock.canRun())
 				sceneMan.update(key);
 		}

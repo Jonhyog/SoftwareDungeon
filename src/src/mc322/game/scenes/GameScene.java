@@ -35,6 +35,12 @@ public class GameScene extends JPanel implements Scene {
 	private SceneControl sceneCtrl;
 	private IDungeon dg;
 	private GameControler gameCtrl;
+	private Assets gameAssets;
+	private int currentLevel = 0;
+	private String[] levels = {
+			"res/dungeons/dungeon.csv",
+			"res/dungeons/dungeon2.csv",
+			"res/dungeons/dungeon3.csv"};
 	
 	public GameScene(int width, int height) {
 		super();
@@ -51,11 +57,18 @@ public class GameScene extends JPanel implements Scene {
 		super.setFocusable(false);
 		
 		this.sceneCtrl = new SceneControl();
+		
+		this.gameCtrl = new GameControler();
+		gameCtrl.game = this;
 	}
 	
 	public void connectInputSource(KeyManager key, MouseManager mouse) {
 		gameCtrl.connectKeyInputSource(key);
 		gameCtrl.connectMouseInputSource(mouse);
+	}
+	
+	public void connectAssets(Assets gameAssets) {
+		this.gameAssets = gameAssets;
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -82,6 +95,7 @@ public class GameScene extends JPanel implements Scene {
 	@Override
 	public void setCallback(SceneManager sceneMan) {
 		this.sceneMan = sceneMan;
+		this.gameCtrl.connectSceneManager(sceneMan);
 	}
 	
 	private IDungeon initDungeon(DungeonHandler dungeonHandler, Assets gameAssets) {
@@ -141,16 +155,19 @@ public class GameScene extends JPanel implements Scene {
 		}
 	}
 	
-	@Override
-	public void initScene(Assets gameAssets) {
+	public void nextLevel() {
+		currentLevel++;
+		loadLevel();
+	}
+	
+	private void loadLevel() {
 		DungeonHandler dungeonHandler = new DungeonHandler();
-		dungeonHandler.setDungeonMap("res/dungeons/dungeon2.csv");
+		dungeonHandler.setDungeonMap(levels[currentLevel]);
 		dungeonHandler.setSep(";");
 		dungeonHandler.loadDungeon(gameAssets);
 		
 		// Inicia Tiles
 		this.dg = initDungeon(dungeonHandler, gameAssets);
-		this.gameCtrl = new GameControler();
 		
 		// Adiciona Entidades
 		addEntities2Dungeon(dungeonHandler, dg, gameAssets);
@@ -159,6 +176,12 @@ public class GameScene extends JPanel implements Scene {
 		IPathfinder pathFinder = new AStar();
 		dg.connectPathfinder(pathFinder);
 		gameCtrl.setDungeon(dg);
+	}
+	
+	
+	@Override
+	public void initScene(Assets gameAssets) {
+		loadLevel();
 		
 		System.out.println("\tCaverna: ok");
 		System.out.println("GameScene: ok");

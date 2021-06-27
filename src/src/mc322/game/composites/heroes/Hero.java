@@ -26,9 +26,9 @@ public abstract class Hero extends DynamicEntity implements IHero {
 		int fatorX = 0, fatorY = 0;
 		
 		if (text.getSizeX() > 32)
-			fatorX = (text.getSizeX() - 32); // FIX-ME: fatorX = (text.getSizeX() - 32) * isFlipado ? -1 : 1
+			fatorX = (text.getSizeX() - 32);
 		if (text.getSizeY() > 32)
-			fatorY = text.getSizeX() - 32;
+			fatorY = text.getSizeY() - 32;
 		
 		g.drawImage(text.getTexture(), x * 32 - fatorX, y * 32 - fatorY, text.getSizeX(), text.getSizeY(), null);
 	}
@@ -86,7 +86,7 @@ public abstract class Hero extends DynamicEntity implements IHero {
 		super.askForPath(pos);
 		if (caminho != null && !isReachable()) {
 			caminho = null;
-			System.out.println("Nao alcanço essa posicao");
+			System.out.println("Nao alcanco essa posicao");
 		}
 	}
 	

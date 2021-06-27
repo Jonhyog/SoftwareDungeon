@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import mc322.game.composites.dungeon.IDungeon;
 import mc322.game.gfx.Sprite;
 
 public class Cell extends StaticEntity {

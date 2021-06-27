@@ -40,7 +40,7 @@ public class GameScene extends JPanel implements Scene {
 	private int currentLevel = 0;
 	private boolean initialized = false;
 	private String[] levels = {
-			"res/dungeons/dungeon.csv",
+			"res/dungeons/dungeon4.csv",
 			"res/dungeons/dungeon2.csv",
 			"res/dungeons/dungeon3.csv"};
 	

@@ -40,7 +40,14 @@ public abstract class Enemy extends DynamicEntity {
 	
 	public void render(Graphics2D g) {
 		Sprite text = animations.get(currentAnim).getCurrentFrame();
-		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
+		int fatorX = 0, fatorY = 0;
+		
+		if (text.getSizeX() > 32)
+			fatorX = (text.getSizeX() - 32);
+		if (text.getSizeY() > 32)
+			fatorY = text.getSizeY() - 32;
+		
+		g.drawImage(text.getTexture(), x * 32 - fatorX, y * 32 - fatorY, text.getSizeX(), text.getSizeY(), null);
 	}
 	
 	public void update() {
@@ -48,6 +55,15 @@ public abstract class Enemy extends DynamicEntity {
 		
 		if (!isAlive()) {
 			root.removeEntity(this);
+			return;
+		}
+		
+		if (this.isAttacking) {
+			if (animations.get(currentAnim).finishedLoop()) {
+				setAttacking(false);
+				setCurrentAnim("idle");
+				resetPath();
+			}
 			return;
 		}
 		
@@ -68,7 +84,13 @@ public abstract class Enemy extends DynamicEntity {
 			root.toggleUpdating(true);
 			nextPosition();
 		} else if (isInAttackRange()){
-			attack(caminho.get(0));
+			int[] target = caminho.get(0);
+			int[] pos = getPosition();
+			
+			lookInDirection(pos[0], target[0]);
+			attack(target);
+			setAttacking(true);
+			setCurrentAnim("atk");
 			root.toggleUpdating(true);
 		} else {
 			askForPath(root.getPlayerPosition());

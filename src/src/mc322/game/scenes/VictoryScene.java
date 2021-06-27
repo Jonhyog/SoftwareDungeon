@@ -1,6 +1,8 @@
 package mc322.game.scenes;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -15,21 +17,18 @@ import mc322.game.scenes.sceneManager.SceneManager;
 import mc322.game.util.GameStats;
 import mc322.game.util.loaders.ImageLoader;
 
-public class GameOverScene extends JPanel implements Scene {
-	
-	private static final long serialVersionUID = -6192734764279263113L;
-	
+public class VictoryScene extends JPanel implements Scene {
 	private SceneManager sceneMan;
 	private int width, height;
 	private Assets gameAssets;
 	private boolean initialized = false;
 	
-	public GameOverScene(int width, int height) {
+	public VictoryScene(int width, int height) {
 		super();
 		this.width = width;
 		this.height = height;
 		
-		System.out.println("MenuScene: loading");
+		System.out.println("VictoyScene: loading");
 		super.setSize(width, height);
 		super.setLayout(null);
 		super.setDoubleBuffered(true);
@@ -54,10 +53,10 @@ public class GameOverScene extends JPanel implements Scene {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D graficos = (Graphics2D) g;
-		BufferedImage img = ImageLoader.loadImage("res/textures/telaInicial.png");
+//		BufferedImage img = ImageLoader.loadImage("res/textures/telaInicial.png");
 		
 		graficos.fillRect(0, 0, 640, 640);
-		g.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
+//		g.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
 			
 	}
 	
@@ -79,13 +78,17 @@ public class GameOverScene extends JPanel implements Scene {
 
 	@Override
 	public void initScene() {
-		JLabel gameOver = new JLabel("Game Over!");
-		JLabel pontuacao = new JLabel("Pontuação: " + GameStats.getScore());
+		JLabel victory = new JLabel("Vitória!");
+		JLabel score = new JLabel("Pontuação: " + GameStats.getScore());
 		
-		gameOver.setBounds(width/2 - 50, height/2 - 50, 100, 50);
-		pontuacao.setBounds(width/2 - 50, height/2 + 50, 100, 50);
-		super.add(gameOver);
-		super.add(pontuacao);
+		victory.setBounds(width/2 - 50, height/2 - 50, 100, 50);
+		victory.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+		victory.setForeground(new Color (255, 255, 255));
+		score.setBounds(width/2 - 50, height/2 + 50, 250, 50);
+		score.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+		score.setForeground(new Color (255, 255, 255));
+		super.add(victory);
+		super.add(score);
 		
 		System.out.println("\tTexto: ok");
 		System.out.println("GameOverScene: ok");

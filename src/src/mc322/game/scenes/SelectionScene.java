@@ -57,14 +57,13 @@ public class SelectionScene extends JPanel implements Scene, ActionListener {
 		Graphics2D graficos = (Graphics2D) g;
 		BufferedImage img = ImageLoader.loadImage("res/textures/selecaoJogador.png");
 			
-		graficos.fillRect(0, 0, 640, 640);
+		graficos.fillRect(0, 0, width, height);
 		g.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
 	}
 	
 	@Override
 	public void setCallback(SceneManager sceneMan) {
 		this.sceneMan = sceneMan;
-		
 	}
 	
 	@Override

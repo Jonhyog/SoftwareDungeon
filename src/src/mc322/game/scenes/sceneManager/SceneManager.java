@@ -42,14 +42,6 @@ public class SceneManager {
 		this.mouse = mouse;
 	}
 	
-	public KeyManager getKeyManager() {
-		return this.key;
-	}
-	
-	public MouseManager getMouseManager() {
-		return this.mouse;
-	}
-	
 	public void addScene(String name, Scene cena) {
 		scenes.put(name, cena);
 		cena.setCallback(this);

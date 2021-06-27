@@ -74,7 +74,6 @@ public class MenuScene extends JPanel implements Scene, ActionListener{
 	@Override
 	public void setCallback(SceneManager sceneMan) {
 		this.sceneMan = sceneMan;
-		
 	}
 
 	@Override
@@ -87,10 +86,8 @@ public class MenuScene extends JPanel implements Scene, ActionListener{
 
 	@Override
 	public void initScene() {
-		JButton btt;
-		
-//		gameAssets.getSprite("telaInicial");
-		btt = new JButton("Jogar");
+		JButton btt = new JButton("Jogar");
+		 
 		btt.setBounds(width/2 - 50, height/2 - 50, 100, 50);
 		btt.addActionListener(this);
 		btt.setActionCommand("Jogar");

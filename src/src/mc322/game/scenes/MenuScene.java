@@ -70,15 +70,16 @@ public class MenuScene extends JPanel implements Scene, ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
         if (action.equals("Jogar")) {
-        	sceneMan.setCurrent("Jogo");
+        	sceneMan.setCurrent("Selecao");
         }
 	}
 
 	@Override
 	public void initScene(Assets gameAssets) {
 		JButton btt;
+		gameAssets.getSprite("telaInicial");
 		btt = new JButton("Jogar");
-		btt.setBounds(width/2 - 50, height/2 - 50, 100, 100);
+		btt.setBounds(width/2 - 50, height/2 - 50, 100, 50);
 		btt.addActionListener(this);
 		btt.setActionCommand("Jogar");
 		btt.setFocusable(false);

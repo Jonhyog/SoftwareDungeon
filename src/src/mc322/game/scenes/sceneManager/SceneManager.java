@@ -57,8 +57,13 @@ public class SceneManager {
 	public void setCurrent(String name) throws SceneManagerException {
 		System.out.println("Mudando Cena: " + currentName +" -> " + name);
 		Scene novaScene = scenes.get(name);
+		
 		if (novaScene == null)
 			throw new SceneNotFound();
+		
+		if (!novaScene.isInitialized())
+			novaScene.initScene();
+		
 		removeCurrent();
 		setCurrentScene(novaScene);
 		setCurrentSceneName(name);

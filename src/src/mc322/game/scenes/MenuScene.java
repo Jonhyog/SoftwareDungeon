@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -13,6 +14,7 @@ import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
 import mc322.game.input.MouseManager;
 import mc322.game.scenes.sceneManager.SceneManager;
+import mc322.game.util.loaders.ImageLoader;
 
 public class MenuScene extends JPanel implements Scene, ActionListener{
 	private static final long serialVersionUID = 7046553700240868429L;
@@ -20,6 +22,7 @@ public class MenuScene extends JPanel implements Scene, ActionListener{
 	private SceneManager sceneMan;
 	private int width, height;
 	private Assets gameAssets;
+	private boolean initialized = false;
 	
 	public MenuScene(int width, int height) {
 		super();
@@ -36,6 +39,10 @@ public class MenuScene extends JPanel implements Scene, ActionListener{
 		super.setFocusable(false);
 	}
 	
+	public boolean isInitialized() {
+		return initialized;
+	}
+	
 	public void connectInputSource(KeyManager key, MouseManager mouse) {
 	}
 	
@@ -46,8 +53,11 @@ public class MenuScene extends JPanel implements Scene, ActionListener{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D graficos = (Graphics2D) g;
-			
+		BufferedImage img = ImageLoader.loadImage("res/textures/telaInicial.png");
+		
 		graficos.fillRect(0, 0, 640, 640);
+		g.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
+			
 	}
 	
 	@Override
@@ -75,9 +85,10 @@ public class MenuScene extends JPanel implements Scene, ActionListener{
 	}
 
 	@Override
-	public void initScene(Assets gameAssets) {
+	public void initScene() {
 		JButton btt;
-		gameAssets.getSprite("telaInicial");
+		
+//		gameAssets.getSprite("telaInicial");
 		btt = new JButton("Jogar");
 		btt.setBounds(width/2 - 50, height/2 - 50, 100, 50);
 		btt.addActionListener(this);
@@ -88,5 +99,4 @@ public class MenuScene extends JPanel implements Scene, ActionListener{
 		System.out.println("MenuScene: ok");
 		
 	}
-
 }

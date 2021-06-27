@@ -95,6 +95,9 @@ public abstract class Hero extends DynamicEntity implements IHero {
 		if (caminho == null || caminho.size() > this.range) {
 			return;
 		}
+		
+		int[] playerPos = getPosition();
+		lookInDirection(playerPos[0], target[0]);
 		System.out.println("Atacando X: " + target[0] + " Y: " + target[1]);
 		setAttacking(true);
 		setCurrentAnim("atk");

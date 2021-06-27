@@ -24,6 +24,7 @@ import mc322.game.input.KeyManager;
 import mc322.game.input.MouseManager;
 import mc322.game.scenes.sceneManager.SceneManager;
 import mc322.game.util.AStar;
+import mc322.game.util.GameStats;
 import mc322.game.util.IPathfinder;
 
 public class GameScene extends JPanel implements Scene {
@@ -37,6 +38,7 @@ public class GameScene extends JPanel implements Scene {
 	private GameControler gameCtrl;
 	private Assets gameAssets;
 	private int currentLevel = 0;
+	private boolean initialized = false;
 	private String[] levels = {
 			"res/dungeons/dungeon.csv",
 			"res/dungeons/dungeon2.csv",
@@ -60,6 +62,10 @@ public class GameScene extends JPanel implements Scene {
 		
 		this.gameCtrl = new GameControler();
 		gameCtrl.game = this;
+	}
+	
+	public boolean isInitialized() {
+		return initialized;
 	}
 	
 	public void connectInputSource(KeyManager key, MouseManager mouse) {
@@ -130,6 +136,14 @@ public class GameScene extends JPanel implements Scene {
 			int y = Integer.parseInt(entidade[2]);
 			
 			cell = dg.getTile(x, y);
+			
+			if (name.equals("hero")) {
+				System.out.println("Criando Jogador: " + GameStats.getHeroClass());
+				ent = HeroBuilder.buildHero(gameAssets, GameStats.getHeroClass());
+				dg.setJogador(ent);
+				gameCtrl.setJogador((IHero) ent);
+			}
+			
 			if (HeroBuilder.isHero(name)) {
 				System.out.println("Criando Jogador");
 				ent = HeroBuilder.buildHero(gameAssets, name);
@@ -180,12 +194,13 @@ public class GameScene extends JPanel implements Scene {
 	
 	
 	@Override
-	public void initScene(Assets gameAssets) {
+	public void initScene() {
 		loadLevel();
 		
 		System.out.println("\tCaverna: ok");
 		System.out.println("GameScene: ok");
-	
+		
+		this.initialized = true;
 	}
 	
 }

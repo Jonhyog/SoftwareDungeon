@@ -12,6 +12,7 @@ import mc322.game.scenes.GameScene;
 // import mc322.game.input.MouseManager;
 import mc322.game.scenes.MenuScene;
 import mc322.game.scenes.Scene;
+import mc322.game.scenes.SelectionScene;
 import mc322.game.scenes.sceneManager.SceneManager;
 import mc322.game.util.Clock;
 
@@ -57,14 +58,18 @@ public class Game {
 		
 		// MenuScene
 		cena = new MenuScene(width, height);
-		cena.initScene(gameAssets);
+		cena.connectAssets(gameAssets);
 		sceneMan.addScene("Menu", cena);
 		
 		// GameScene
 		cena = new GameScene(width, height);
 		cena.connectAssets(gameAssets);
-		cena.initScene(gameAssets);
 		sceneMan.addScene("Jogo", cena);
+		
+		// Selecao
+		cena = new SelectionScene(width, height);
+		cena.connectAssets(gameAssets);
+		sceneMan.addScene("Selecao", cena);
 	}
 	
 	private void setCursor(BufferedImage img) {

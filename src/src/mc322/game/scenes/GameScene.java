@@ -37,7 +37,7 @@ public class GameScene extends JPanel implements Scene {
 	private IDungeon dg;
 	private GameControler gameCtrl;
 	private Assets gameAssets;
-	private int currentLevel = 0;
+	private int currentLevel = 2;
 	private boolean initialized = false;
 	private String[] levels = {
 			"res/dungeons/dungeon4.csv",
@@ -171,6 +171,11 @@ public class GameScene extends JPanel implements Scene {
 	
 	public void nextLevel() {
 		currentLevel++;
+		if (currentLevel == levels.length) {
+			System.out.println("AQUI");
+			sceneMan.setCurrent("GameOver");
+			return;
+		}
 		loadLevel();
 	}
 	

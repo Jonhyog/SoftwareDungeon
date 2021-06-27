@@ -8,6 +8,7 @@ import mc322.game.displays.GameWindow;
 import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
 import mc322.game.input.MouseManager;
+import mc322.game.scenes.GameOverScene;
 import mc322.game.scenes.GameScene;
 // import mc322.game.input.MouseManager;
 import mc322.game.scenes.MenuScene;
@@ -70,6 +71,11 @@ public class Game {
 		cena = new SelectionScene(width, height);
 		cena.connectAssets(gameAssets);
 		sceneMan.addScene("Selecao", cena);
+		
+		// Game Over
+		cena = new GameOverScene(width, height);
+		cena.connectAssets(gameAssets);
+		sceneMan.addScene("GameOver", cena);
 	}
 	
 	private void setCursor(BufferedImage img) {

@@ -88,7 +88,7 @@ public class SelectionScene extends JPanel implements Scene, ActionListener {
 		
 		// Selecao do Engenheiro
 		bttEng = new JButton("Engenheiro");
-		bttEng.setBounds((width+100)/2 - 50, (height-50)/2 - 50, 100, 50);
+		bttEng.setBounds(80, 272, 144, 48);
 		bttEng.addActionListener(this);
 		bttEng.setActionCommand("engenheiro");
 		bttEng.setFocusable(false);
@@ -96,7 +96,7 @@ public class SelectionScene extends JPanel implements Scene, ActionListener {
 		
 		// Selecao do Tecnico
 		bttTi = new JButton("Tecnico");
-		bttTi.setBounds((width-100)/2 - 50, (height-50)/2 - 50, 100, 50);
+		bttTi.setBounds(416, 272, 144, 48);
 		bttTi.addActionListener(this);
 		bttTi.setActionCommand("tecnico");
 		bttTi.setFocusable(false);
@@ -104,7 +104,7 @@ public class SelectionScene extends JPanel implements Scene, ActionListener {
 		
 		// Selecao do Hacker
 		bttHac = new JButton("Hacker");
-		bttHac.setBounds((width-100)/2 - 50, (height+50)/2 - 50, 100, 50);
+		bttHac.setBounds(80, 528, 144, 48);
 		bttHac.addActionListener(this);
 		bttHac.setActionCommand("hacker");
 		bttHac.setFocusable(false);
@@ -112,7 +112,7 @@ public class SelectionScene extends JPanel implements Scene, ActionListener {
 		
 		// Selecao do Estagiario
 		bttEst = new JButton("Estagiario");
-		bttEst.setBounds((width+100)/2 - 50, (height+50)/2 - 50, 100, 50);
+		bttEst.setBounds(416, 528, 144, 48);
 		bttEst.addActionListener(this);
 		bttEst.setActionCommand("estagiario");
 		bttEst.setFocusable(false);

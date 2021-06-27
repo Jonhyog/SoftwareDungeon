@@ -7,14 +7,18 @@ import mc322.game.composites.dungeon.IDungeon;
 import mc322.game.composites.heroes.IHero;
 import mc322.game.input.KeyManager;
 import mc322.game.input.MouseManager;
+import mc322.game.scenes.GameScene;
+import mc322.game.scenes.sceneManager.SceneManager;
+import mc322.game.util.GameStats;
 
 public class GameControler {
 	private IHero jogador;
 	private IDungeon dg;
-	// private ArrayList<Entity> inimigos;
 	private boolean handleAttack = false;
 	private boolean handleMovement = false;
 	private boolean handleMouse = false;
+	public GameScene game;
+	private SceneManager sceneMan = null;
 	private KeyManager key;
 	private MouseManager mouse;
 	
@@ -24,6 +28,10 @@ public class GameControler {
 	
 	public void connectMouseInputSource(MouseManager mouse) {
 		this.mouse = mouse;
+	}
+	
+	public void connectSceneManager(SceneManager sceneMan) {
+		this.sceneMan = sceneMan;
 	}
 	
 	public void setJogador(IHero jogador) {
@@ -101,8 +109,16 @@ public class GameControler {
 				handleKeys();
 			else
 				handleMouseEvents();
-//			nextTurn();
 		}
+		
+		int[] playerPos = dg.getPlayerPosition();
+		int[] saida = dg.getSaida();
+		
+		if (playerPos[0] == saida[0] && playerPos[1] == saida[1]) {
+			GameStats.increaseScore(100);
+			game.nextLevel();
+		}
+		
 		key.clearKeys();
 		mouse.clearKeys();
 	}

@@ -1,5 +1,6 @@
 package mc322.game.scenes.sceneManager;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.Hashtable;
 
@@ -57,8 +58,13 @@ public class SceneManager {
 	public void setCurrent(String name) throws SceneManagerException {
 		System.out.println("Mudando Cena: " + currentName +" -> " + name);
 		Scene novaScene = scenes.get(name);
+		
 		if (novaScene == null)
 			throw new SceneNotFound();
+		
+		if (!novaScene.isInitialized())
+			novaScene.initScene();
+		
 		removeCurrent();
 		setCurrentScene(novaScene);
 		setCurrentSceneName(name);
@@ -68,7 +74,8 @@ public class SceneManager {
 	private void conectScene2Display() {
 		if (main != null) {
 			currentScene.connectInputSource(key, mouse);
-			main.add((Component) currentScene);
+			main.add((Component) currentScene, BorderLayout.PAGE_START);
+			main.pack();
 		}
 	}
 	

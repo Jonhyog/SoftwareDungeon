@@ -25,7 +25,6 @@ public class CellBuilder {
 		IAnimation anim = new Animation();
 		
 		anim.addFrame(gameAssets.getSprite(name), 10);
-//		cell.setTexture(gameAssets.getSprite(name));
 		cell.connectAnimation("idle", anim);
 		cell.setSolida(gameAssets.getSprite(name).isSolid());
 		

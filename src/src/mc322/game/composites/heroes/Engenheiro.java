@@ -25,8 +25,7 @@ public class Engenheiro extends Hero implements IHero {
 
 	@Override
 	public void render(Graphics2D g) {
-		Sprite text = animations.get(currentAnim).getCurrentFrame();
-		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
+		super.render(g);
 	}
 
 	@Override

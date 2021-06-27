@@ -2,6 +2,7 @@ package mc322.game.composites.items;
 
 import mc322.game.composites.IEntity;
 import mc322.game.gfx.Sprite;
+import mc322.game.util.GameStats;
 
 public class Coffe extends Item {
 	
@@ -22,12 +23,6 @@ public class Coffe extends Item {
 		return;
 	}
 
-//	@Override
-//	public void render(Graphics2D g) {
-////		g.drawImage(texture.getTexture(), x * 32, y * 32, texture.getSizeX(), texture.getSizeY(), null);
-//		Sprite text = animations.get(currentAnim).getCurrentFrame();
-//		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
-//	}
 
 	@Override
 	public void update() {
@@ -38,6 +33,7 @@ public class Coffe extends Item {
 		if (ent.getType().equals("Hero")) {			
 			ent.updateLife(Coffe.healLifePoint);
 			root.removeEntity(this);
+			GameStats.increaseScore(Coffe.healLifePoint);
 		}
 	}
 

@@ -32,6 +32,10 @@ public class Dungeon extends StaticEntity implements IDungeon {
 		this.saida = new int[] {x, y};
 	}
 	
+	public int[] getSaida() {
+		return saida;
+	}
+	
 	public void setSize(int x, int y) {
 		this.x = x; // Posicao nao eh necessaria na caverna ent podemos usar x e y
 		this.y = y; // Mas x e y se referem a posicao da entidade
@@ -93,13 +97,13 @@ public class Dungeon extends StaticEntity implements IDungeon {
 	public void moveEntity(IEntity ent, int[] target) throws DungeonException {
 		int[] source = ent.getPosition();
 		// FIX-ME: CAST NAO DEVE SER FEITO - add QueueRemoval a Entity
-		Cell sourceTile = (Cell) getTile(source[0], source[1]);
+		IEntity sourceTile = getTile(source[0], source[1]);
 		IEntity targetTile = getTile(target[0], target[1]);
 		
 		if (targetTile.isSolid())
 			throw new InvalidMovement("Movimento para tile solido nao eh valido");
 		
-		sourceTile.queueRemoval(ent);
+		sourceTile.removeEntity(ent);
 		targetTile.addEntity(ent);
 		ent.setPosition(target[0], target[1]);
 		this.entitiesUpdating = true;
@@ -128,8 +132,8 @@ public class Dungeon extends StaticEntity implements IDungeon {
 	@Override
 	public void removeEntity(IEntity ent) { // FIX-ME: CAST NAO DEVE SER FEITO
 		int pos[] = ent.getPosition();
-		Cell cell = (Cell) getTile(pos[0], pos[1]);
-		cell.queueRemoval(ent);
+		IEntity cell = getTile(pos[0], pos[1]);
+		cell.removeEntity(ent);
 	}
 
 	@Override

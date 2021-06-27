@@ -7,9 +7,11 @@ import mc322.game.composites.DynamicEntity;
 import mc322.game.composites.Movement;
 import mc322.game.composites.dungeon.exceptions.DungeonException;
 import mc322.game.gfx.Sprite;
+import mc322.game.util.GameStats;
 
 public abstract class Enemy extends DynamicEntity {
 	protected Movement enemyMovement;
+	protected boolean attacked = false;
 	
 	protected Enemy() {
 		setSolida(false);
@@ -22,6 +24,11 @@ public abstract class Enemy extends DynamicEntity {
 	
 	public void setMovement(Movement enemyMovement) {
 		this.enemyMovement = enemyMovement;
+	}
+	
+	protected void resetPath() {
+		super.resetPath();
+		this.attacked = false;
 	}
 	
 	private void attack(int[] target) {
@@ -38,9 +45,28 @@ public abstract class Enemy extends DynamicEntity {
 		return false;
 	}
 	
+	protected boolean isReachable() {
+		return range * 3 >= caminho.size();
+	}
+	
+//	protected void askForPath(int pos[]) {
+//		super.askForPath(pos);
+//		if (caminho != null && !isReachable()) {
+//			caminho = null;
+//			System.out.println("Nao alcanco essa posicao");
+//		}
+//	}
+	
 	public void render(Graphics2D g) {
 		Sprite text = animations.get(currentAnim).getCurrentFrame();
-		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
+		int fatorX = 0, fatorY = 0;
+		
+		if (text.getSizeX() > 32)
+			fatorX = (text.getSizeX() - 32);
+		if (text.getSizeY() > 32)
+			fatorY = text.getSizeY() - 32;
+		
+		g.drawImage(text.getTexture(), x * 32 - fatorX, y * 32 - fatorY, text.getSizeX(), text.getSizeY(), null);
 	}
 	
 	public void update() {
@@ -48,6 +74,16 @@ public abstract class Enemy extends DynamicEntity {
 		
 		if (!isAlive()) {
 			root.removeEntity(this);
+			GameStats.increaseScore(life);
+			return;
+		}
+		
+		if (this.isAttacking) {
+			if (animations.get(currentAnim).finishedLoop()) {
+				setAttacking(false);
+				setCurrentAnim("idle");
+			}
+			root.toggleUpdating(true);
 			return;
 		}
 		
@@ -56,7 +92,7 @@ public abstract class Enemy extends DynamicEntity {
 			return;
 		}
 		
-		if (n == this.range) {
+		if (n == this.range || attacked) {
 			return;
 		}
 		
@@ -64,11 +100,21 @@ public abstract class Enemy extends DynamicEntity {
 			return;
 		}
 		
+		if (caminho != null && !isReachable())
+			return;
+		
 		if (knowsPath() && isInRange()) {
 			root.toggleUpdating(true);
 			nextPosition();
 		} else if (isInAttackRange()){
-			attack(caminho.get(0));
+			int[] target = caminho.get(0);
+			int[] pos = getPosition();
+			
+			lookInDirection(pos[0], target[0]);
+			attack(target);
+			this.attacked = true;
+			setAttacking(true);
+			setCurrentAnim("atk");
 			root.toggleUpdating(true);
 		} else {
 			askForPath(root.getPlayerPosition());

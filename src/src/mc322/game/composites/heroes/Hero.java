@@ -7,8 +7,9 @@ import mc322.game.composites.DynamicEntity;
 import mc322.game.composites.Movement;
 import mc322.game.composites.dungeon.exceptions.DungeonException;
 import mc322.game.gfx.Sprite;
+import mc322.game.util.GameStats;
 
-public abstract class Hero extends DynamicEntity {
+public abstract class Hero extends DynamicEntity implements IHero {
 	protected Movement heroMovement;
 	
 	protected Hero() {
@@ -21,14 +22,19 @@ public abstract class Hero extends DynamicEntity {
 		this.heroMovement = heroMovement;
 	}
 	
+	public void updateLife(int n) {
+		super.updateLife(n);
+		GameStats.increasePlayerLife(n);
+	}
+	
 	public void render(Graphics2D g) {
 		Sprite text = animations.get(currentAnim).getCurrentFrame();
 		int fatorX = 0, fatorY = 0;
 		
 		if (text.getSizeX() > 32)
-			fatorX = (text.getSizeX() - 32); // FIX-ME: fatorX = (text.getSizeX() - 32) * isFlipado ? -1 : 1
+			fatorX = (text.getSizeX() - 32);
 		if (text.getSizeY() > 32)
-			fatorY = text.getSizeX() - 32;
+			fatorY = text.getSizeY() - 32;
 		
 		g.drawImage(text.getTexture(), x * 32 - fatorX, y * 32 - fatorY, text.getSizeX(), text.getSizeY(), null);
 	}
@@ -78,15 +84,11 @@ public abstract class Hero extends DynamicEntity {
 		askForPath(target);
 	}
 	
-	private boolean isReachable() {
-		return range >= caminho.size();
-	}
-	
 	protected void askForPath(int pos[]) {
 		super.askForPath(pos);
 		if (caminho != null && !isReachable()) {
 			caminho = null;
-			System.out.println("Nao alcanço essa posicao");
+			System.out.println("Nao alcanco essa posicao");
 		}
 	}
 	
@@ -95,6 +97,9 @@ public abstract class Hero extends DynamicEntity {
 		if (caminho == null || caminho.size() > this.range) {
 			return;
 		}
+		
+		int[] playerPos = getPosition();
+		lookInDirection(playerPos[0], target[0]);
 		System.out.println("Atacando X: " + target[0] + " Y: " + target[1]);
 		setAttacking(true);
 		setCurrentAnim("atk");

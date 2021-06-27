@@ -8,10 +8,12 @@ import mc322.game.displays.GameWindow;
 import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
 import mc322.game.input.MouseManager;
+import mc322.game.scenes.GameOverScene;
 import mc322.game.scenes.GameScene;
 // import mc322.game.input.MouseManager;
 import mc322.game.scenes.MenuScene;
 import mc322.game.scenes.Scene;
+import mc322.game.scenes.SelectionScene;
 import mc322.game.scenes.sceneManager.SceneManager;
 import mc322.game.util.Clock;
 
@@ -57,13 +59,23 @@ public class Game {
 		
 		// MenuScene
 		cena = new MenuScene(width, height);
-		cena.initScene(gameAssets);
+		cena.connectAssets(gameAssets);
 		sceneMan.addScene("Menu", cena);
 		
 		// GameScene
 		cena = new GameScene(width, height);
-		cena.initScene(gameAssets);
+		cena.connectAssets(gameAssets);
 		sceneMan.addScene("Jogo", cena);
+		
+		// Selecao
+		cena = new SelectionScene(width, height);
+		cena.connectAssets(gameAssets);
+		sceneMan.addScene("Selecao", cena);
+		
+		// Game Over
+		cena = new GameOverScene(width, height);
+		cena.connectAssets(gameAssets);
+		sceneMan.addScene("GameOver", cena);
 	}
 	
 	private void setCursor(BufferedImage img) {
@@ -78,7 +90,6 @@ public class Game {
 		main = new GameWindow(title, width, height);
 		key = new KeyManager();
 		mouse = new MouseManager();
-		// mouse = new MouseManager();
 		main.addKeyListener(key);
 		main.addMouseListener(mouse);
 		
@@ -96,7 +107,7 @@ public class Game {
 		clock.start();
 		
 		System.out.println("Iniciando loop");
-		while (running) { // Adicionar um clock
+		while (running) {
 			if (clock.canRun())
 				sceneMan.update(key);
 		}

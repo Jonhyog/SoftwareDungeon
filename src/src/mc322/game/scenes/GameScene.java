@@ -2,10 +2,12 @@ package mc322.game.scenes;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import mc322.game.composites.IEntity;
@@ -20,10 +22,12 @@ import mc322.game.factory.EnemyBuilder;
 import mc322.game.factory.HeroBuilder;
 import mc322.game.factory.ItemBuilder;
 import mc322.game.gfx.Assets;
+import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
 import mc322.game.input.MouseManager;
 import mc322.game.scenes.sceneManager.SceneManager;
 import mc322.game.util.AStar;
+import mc322.game.util.GameStats;
 import mc322.game.util.IPathfinder;
 
 public class GameScene extends JPanel implements Scene {
@@ -35,6 +39,15 @@ public class GameScene extends JPanel implements Scene {
 	private SceneControl sceneCtrl;
 	private IDungeon dg;
 	private GameControler gameCtrl;
+	private Assets gameAssets;
+	private int currentLevel = 0;
+	private boolean initialized = false;
+	private String[] levels = {
+			"res/dungeons/dungeon.csv",
+			"res/dungeons/dungeon2.csv",
+			"res/dungeons/dungeon3.csv",
+			"res/dungeons/dungeon4.csv"};
+	private JLabel score;
 	
 	public GameScene(int width, int height) {
 		super();
@@ -47,10 +60,18 @@ public class GameScene extends JPanel implements Scene {
 		super.setDoubleBuffered(true);
 		super.setOpaque(false);
 		super.setMaximumSize(new Dimension(width, height));
-		super.setMinimumSize(new Dimension(width, height));
+		super.setPreferredSize(new Dimension(width, height + 80));
+		super.setMinimumSize(new Dimension(width, height + 160));
 		super.setFocusable(false);
 		
 		this.sceneCtrl = new SceneControl();
+		
+		this.gameCtrl = new GameControler();
+		gameCtrl.game = this;
+	}
+	
+	public boolean isInitialized() {
+		return initialized;
 	}
 	
 	public void connectInputSource(KeyManager key, MouseManager mouse) {
@@ -58,13 +79,18 @@ public class GameScene extends JPanel implements Scene {
 		gameCtrl.connectMouseInputSource(mouse);
 	}
 	
+	public void connectAssets(Assets gameAssets) {
+		this.gameAssets = gameAssets;
+	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D graficos = (Graphics2D) g;
 		
 		graficos.setColor(new Color(0, 0, 0));
-		graficos.fillRect(0, 0, width, height);
+		graficos.fillRect(0, 0, super.getWidth(), super.getHeight());
 		dg.render(graficos);
+		renderHUD(graficos);
 	}
 	
 	@Override
@@ -73,7 +99,25 @@ public class GameScene extends JPanel implements Scene {
 		gameCtrl.update();
 		render();
 	}
-
+	
+	private void renderHUD(Graphics2D g) {
+		int life = GameStats.getPlayerLife();
+		int nCoracoes = life / 2;
+		Sprite heart = gameAssets.getSprite("coracao");
+		Sprite player = gameAssets.getSprite(GameStats.getHeroClass() + "1");
+		
+		g.setColor(new Color(255, 255, 255));
+		g.drawLine(0, 640, super.getWidth(), 640);
+		g.drawImage(player.getTexture(), 24, 650, player.getSizeX(), player.getSizeY(), null);
+		for (int i = 0; i < nCoracoes; i++) {
+			g.drawImage(heart.getTexture(),
+					i * heart.getSizeX() + 64, 650,
+					heart.getSizeX(), heart.getSizeY(), null);
+		}
+		
+		score.setText("Points: " + Integer.toString(GameStats.getScore()));
+	}
+	
 	@Override
 	public void render() {
 		repaint();
@@ -82,6 +126,7 @@ public class GameScene extends JPanel implements Scene {
 	@Override
 	public void setCallback(SceneManager sceneMan) {
 		this.sceneMan = sceneMan;
+		this.gameCtrl.connectSceneManager(sceneMan);
 	}
 	
 	private IDungeon initDungeon(DungeonHandler dungeonHandler, Assets gameAssets) {
@@ -116,6 +161,14 @@ public class GameScene extends JPanel implements Scene {
 			int y = Integer.parseInt(entidade[2]);
 			
 			cell = dg.getTile(x, y);
+			
+			if (name.equals("hero")) {
+				System.out.println("Criando Jogador: " + GameStats.getHeroClass());
+				ent = HeroBuilder.buildHero(gameAssets, GameStats.getHeroClass());
+				dg.setJogador(ent);
+				gameCtrl.setJogador((IHero) ent);
+			}
+			
 			if (HeroBuilder.isHero(name)) {
 				System.out.println("Criando Jogador");
 				ent = HeroBuilder.buildHero(gameAssets, name);
@@ -141,16 +194,23 @@ public class GameScene extends JPanel implements Scene {
 		}
 	}
 	
-	@Override
-	public void initScene(Assets gameAssets) {
+	public void nextLevel() {
+		currentLevel++;
+		if (currentLevel == levels.length) {
+			sceneMan.setCurrent("GameOver");
+			return;
+		}
+		loadLevel();
+	}
+	
+	private void loadLevel() {
 		DungeonHandler dungeonHandler = new DungeonHandler();
-		dungeonHandler.setDungeonMap("res/dungeons/dungeon2.csv");
+		dungeonHandler.setDungeonMap(levels[currentLevel]);
 		dungeonHandler.setSep(";");
 		dungeonHandler.loadDungeon(gameAssets);
 		
 		// Inicia Tiles
 		this.dg = initDungeon(dungeonHandler, gameAssets);
-		this.gameCtrl = new GameControler();
 		
 		// Adiciona Entidades
 		addEntities2Dungeon(dungeonHandler, dg, gameAssets);
@@ -159,10 +219,24 @@ public class GameScene extends JPanel implements Scene {
 		IPathfinder pathFinder = new AStar();
 		dg.connectPathfinder(pathFinder);
 		gameCtrl.setDungeon(dg);
+	}
+	
+	
+	@Override
+	public void initScene() {
+		loadLevel();
 		
+		// Display da Pontuacao
+		score = new JLabel("Points: " + Integer.toString(GameStats.getScore()));
+		score.setBounds(64, 670, 200, 30);
+		score.setForeground(new Color (255, 255, 255));
+		score.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+		add(score);
+				
 		System.out.println("\tCaverna: ok");
 		System.out.println("GameScene: ok");
-	
+		
+		this.initialized = true;
 	}
 	
 }

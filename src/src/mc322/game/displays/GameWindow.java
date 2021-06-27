@@ -1,5 +1,7 @@
 package mc322.game.displays;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 
 public class GameWindow extends JFrame{
@@ -14,6 +16,7 @@ public class GameWindow extends JFrame{
 		super.setSize(width, height);
 		super.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		super.setResizable(false);
+		super.setLayout(new BorderLayout());
 		super.setLocationRelativeTo(null);
 		super.setVisible(true);
 		System.out.println("MainWindow: ok");

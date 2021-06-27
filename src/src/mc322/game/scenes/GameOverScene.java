@@ -4,27 +4,29 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
 import mc322.game.input.MouseManager;
 import mc322.game.scenes.sceneManager.SceneManager;
+import mc322.game.util.GameStats;
 import mc322.game.util.loaders.ImageLoader;
 
-public class MenuScene extends JPanel implements Scene, ActionListener{
-	private static final long serialVersionUID = 7046553700240868429L;
+public class GameOverScene extends JPanel implements Scene {
+	
+	private static final long serialVersionUID = -6192734764279263113L;
 	
 	private SceneManager sceneMan;
 	private int width, height;
 	private Assets gameAssets;
 	private boolean initialized = false;
 	
-	public MenuScene(int width, int height) {
+	public GameOverScene(int width, int height) {
 		super();
 		this.width = width;
 		this.height = height;
@@ -78,26 +80,17 @@ public class MenuScene extends JPanel implements Scene, ActionListener{
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		String action = e.getActionCommand();
-        if (action.equals("Jogar")) {
-        	sceneMan.setCurrent("Selecao");
-        }
-	}
-
-	@Override
 	public void initScene() {
-		JButton btt;
+		JLabel gameOver = new JLabel("Game Over!");
+		JLabel pontuacao = new JLabel("Pontuação: " + GameStats.getScore());
 		
-//		gameAssets.getSprite("telaInicial");
-		btt = new JButton("Jogar");
-		btt.setBounds(width/2 - 50, height/2 - 50, 100, 50);
-		btt.addActionListener(this);
-		btt.setActionCommand("Jogar");
-		btt.setFocusable(false);
-		super.add(btt);
-		System.out.println("\tBotao Jogar: ok");
-		System.out.println("MenuScene: ok");
+		gameOver.setBounds(width/2 - 50, height/2 - 50, 100, 50);
+		pontuacao.setBounds(width/2 - 50, height/2 + 50, 100, 50);
+		super.add(gameOver);
+		super.add(pontuacao);
+		
+		System.out.println("\tTexto: ok");
+		System.out.println("GameOverScene: ok");
 		
 	}
 }

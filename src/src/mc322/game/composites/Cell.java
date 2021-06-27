@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import mc322.game.composites.dungeon.IDungeon;
 import mc322.game.gfx.Sprite;
 
 public class Cell extends StaticEntity {
@@ -48,7 +47,7 @@ public class Cell extends StaticEntity {
 		removeStack.add(ent); // Remocao nao pode ocorrer durante iteracao 
 	}
 	
-	public void queueRemoval(IEntity ent) {
+	private void queueRemoval(IEntity ent) {
 		removeStack.add(ent);
 	}
 	
@@ -60,11 +59,15 @@ public class Cell extends StaticEntity {
 		entitys.add(ent);
 		ent.setCallback(this.root);
 	}
-
+	
+	
 	@Override
 	public void removeEntity(IEntity ent) {
-		entitys.remove(ent);
-		// FIX-ME: TRATAR ERRO CASO TENTE REMOVER ENT N PRESENTE
+		queueRemoval(ent);
+	}
+	
+	private void remove(IEntity ent) {
+		entitys.remove(ent);		
 	}
 
 	@Override
@@ -81,7 +84,7 @@ public class Cell extends StaticEntity {
 	public void update() {
 		if (!removeStack.empty()) {
 			for (IEntity ent : removeStack) {
-				removeEntity(ent);
+				remove(ent);
 			}
 			removeStack.clear();
 		}

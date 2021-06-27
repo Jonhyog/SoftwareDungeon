@@ -10,6 +10,7 @@ public interface IDungeon extends IEntity{
 	public void moveEntity(IEntity ent, int[] target);
 	public int[] getPlayerPosition();
 	public void setSaida(int x, int y);
+	public int[] getSaida();
 	public IEntity getTile(int x, int y);
 	public void setSize(int x, int y);
 	public void setJogador(IEntity jogador);

@@ -8,7 +8,7 @@ public class Hacker extends Hero implements IHero {
 	
 	public Hacker() {
 		super();
-		this.life = 10;
+		this.life = 30;
 		this.attack = 2;
 		this.range = 5;
 

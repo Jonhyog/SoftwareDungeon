@@ -14,6 +14,7 @@ import mc322.game.scenes.GameScene;
 import mc322.game.scenes.MenuScene;
 import mc322.game.scenes.Scene;
 import mc322.game.scenes.SelectionScene;
+import mc322.game.scenes.VictoryScene;
 import mc322.game.scenes.sceneManager.SceneManager;
 import mc322.game.util.Clock;
 
@@ -76,6 +77,13 @@ public class Game {
 		cena = new GameOverScene(width, height);
 		cena.connectAssets(gameAssets);
 		sceneMan.addScene("GameOver", cena);
+		
+		// VictoryScene
+		cena = new VictoryScene(width, height);
+		cena.connectAssets(gameAssets);
+		sceneMan.addScene("Victory", cena);
+		
+		sceneMan.setCurrent("Menu");
 	}
 	
 	private void setCursor(BufferedImage img) {
@@ -96,7 +104,6 @@ public class Game {
 		loadAssets();
 		main.setIconImage(gameAssets.getSprite("bug1").getTexture());
 		createScenes();
-		sceneMan.setCurrent("Menu");
 		setCursor(gameAssets.getSprite("cursor").getTexture());
 		
 		sceneMan.setInputSource(key, mouse);

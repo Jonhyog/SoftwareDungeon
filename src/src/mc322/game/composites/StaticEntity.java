@@ -11,10 +11,9 @@ public abstract class StaticEntity implements IEntity {
 	protected IDungeon root;
 	protected Sprite texture;
 	protected Hashtable<String, IAnimation> animations = null; // FIX
-	protected String currentAnim;
-	protected boolean isAttacking = false;
 	protected String type;
-	protected boolean solid;
+	protected String state;
+	protected boolean solid, isAttacking = false; // FIX
 	
 	public void setTexture(Sprite texture) {
 		this.texture = texture;
@@ -28,8 +27,8 @@ public abstract class StaticEntity implements IEntity {
 		anim.flipSprites(false);
 	}
 	
-	protected void setCurrentAnim(String name) {
-		this.currentAnim = name;
+	protected void setState(String state) {
+		this.state = state;
 	}
 	
 	protected void setAttacking(boolean state) {

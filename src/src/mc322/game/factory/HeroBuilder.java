@@ -68,14 +68,12 @@ public class HeroBuilder {
 				animAtk.addFrame(gameAssets.getSprite("tecnicoAtk3"), 15);
 				break;
 			default:
-				if (jogador == null)
-					System.out.println("FIX-ME: Heroi desconhecido"); // Lanca Excecao
 				break;
 		}
-		// jogador.setSolida(gameAssets.getSprite(hero).isSolid());
+		
 		jogador.connectAnimation("idle", anim);
 		jogador.connectAnimation("atk", animAtk);
-		jogador.setMovement(new HeroMovement());
+		jogador.connectMovement(new HeroMovement());
 		return jogador;
 	}
 }

@@ -26,7 +26,7 @@ public class Coffe extends Item {
 
 	@Override
 	public void update() {
-		animations.get(currentAnim).tick();
+		animations.get(state).tick();
 	}
 	
 	public void interact(IEntity ent) {

@@ -3,7 +3,6 @@ package mc322.game.composites.heroes;
 import java.awt.Graphics2D;
 
 import mc322.game.composites.IEntity;
-import mc322.game.gfx.Sprite;
 
 public class Estagiario extends Hero implements IHero {
 	public Estagiario() {

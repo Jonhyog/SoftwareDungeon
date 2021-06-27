@@ -9,6 +9,7 @@ import mc322.game.input.KeyManager;
 import mc322.game.input.MouseManager;
 import mc322.game.scenes.GameScene;
 import mc322.game.scenes.sceneManager.SceneManager;
+import mc322.game.util.GameStats;
 
 public class GameControler {
 	private IHero jogador;
@@ -113,9 +114,10 @@ public class GameControler {
 		int[] playerPos = dg.getPlayerPosition();
 		int[] saida = dg.getSaida();
 		
-		if (playerPos[0] == saida[0] && playerPos[1] == saida[1])
+		if (playerPos[0] == saida[0] && playerPos[1] == saida[1]) {
+			GameStats.increaseScore(100);
 			game.nextLevel();
-//			sceneMan.setCurrent("Menu");
+		}
 		
 		key.clearKeys();
 		mouse.clearKeys();

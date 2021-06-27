@@ -1,5 +1,6 @@
 package mc322.game.scenes.sceneManager;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.Hashtable;
 
@@ -73,7 +74,8 @@ public class SceneManager {
 	private void conectScene2Display() {
 		if (main != null) {
 			currentScene.connectInputSource(key, mouse);
-			main.add((Component) currentScene);
+			main.add((Component) currentScene, BorderLayout.PAGE_START);
+			main.pack();
 		}
 	}
 	

@@ -36,6 +36,7 @@ public class SelectionScene extends JPanel implements Scene, ActionListener {
 		super.setDoubleBuffered(true);
 		super.setOpaque(false);
 		super.setMaximumSize(new Dimension(width, height));
+		super.setPreferredSize(new Dimension(width, height));
 		super.setMinimumSize(new Dimension(width, height));
 		super.setFocusable(false);
 	}

@@ -7,6 +7,7 @@ import mc322.game.composites.DynamicEntity;
 import mc322.game.composites.Movement;
 import mc322.game.composites.dungeon.exceptions.DungeonException;
 import mc322.game.gfx.Sprite;
+import mc322.game.util.GameStats;
 
 public abstract class Hero extends DynamicEntity implements IHero {
 	protected Movement heroMovement;
@@ -19,6 +20,11 @@ public abstract class Hero extends DynamicEntity implements IHero {
 	
 	public void setMovement(Movement heroMovement) {
 		this.heroMovement = heroMovement;
+	}
+	
+	public void updateLife(int n) {
+		super.updateLife(n);
+		GameStats.increasePlayerLife(n);
 	}
 	
 	public void render(Graphics2D g) {

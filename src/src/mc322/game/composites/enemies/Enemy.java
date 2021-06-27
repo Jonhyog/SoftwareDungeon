@@ -7,6 +7,7 @@ import mc322.game.composites.DynamicEntity;
 import mc322.game.composites.Movement;
 import mc322.game.composites.dungeon.exceptions.DungeonException;
 import mc322.game.gfx.Sprite;
+import mc322.game.util.GameStats;
 
 public abstract class Enemy extends DynamicEntity {
 	protected Movement enemyMovement;
@@ -55,6 +56,7 @@ public abstract class Enemy extends DynamicEntity {
 		
 		if (!isAlive()) {
 			root.removeEntity(this);
+			GameStats.increaseScore(life);
 			return;
 		}
 		

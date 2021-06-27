@@ -2,6 +2,7 @@ package mc322.game.composites.items;
 
 import mc322.game.composites.IEntity;
 import mc322.game.gfx.Sprite;
+import mc322.game.util.GameStats;
 
 public class Key extends Item {
 	
@@ -34,6 +35,7 @@ public class Key extends Item {
 		if (ent.getType().equals("Hero")) {			
 			notifyListeners();
 			root.removeEntity(this);
+			GameStats.increaseScore(10);
 		}
 	}
 

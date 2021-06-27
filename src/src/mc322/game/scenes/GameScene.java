@@ -2,10 +2,13 @@ package mc322.game.scenes;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import mc322.game.composites.IEntity;
@@ -20,6 +23,7 @@ import mc322.game.factory.EnemyBuilder;
 import mc322.game.factory.HeroBuilder;
 import mc322.game.factory.ItemBuilder;
 import mc322.game.gfx.Assets;
+import mc322.game.gfx.Sprite;
 import mc322.game.input.KeyManager;
 import mc322.game.input.MouseManager;
 import mc322.game.scenes.sceneManager.SceneManager;
@@ -37,12 +41,13 @@ public class GameScene extends JPanel implements Scene {
 	private IDungeon dg;
 	private GameControler gameCtrl;
 	private Assets gameAssets;
-	private int currentLevel = 2;
+	private int currentLevel = 0;
 	private boolean initialized = false;
 	private String[] levels = {
 			"res/dungeons/dungeon4.csv",
 			"res/dungeons/dungeon2.csv",
 			"res/dungeons/dungeon3.csv"};
+	private JLabel score;
 	
 	public GameScene(int width, int height) {
 		super();
@@ -55,7 +60,8 @@ public class GameScene extends JPanel implements Scene {
 		super.setDoubleBuffered(true);
 		super.setOpaque(false);
 		super.setMaximumSize(new Dimension(width, height));
-		super.setMinimumSize(new Dimension(width, height));
+		super.setPreferredSize(new Dimension(width, height + 80));
+		super.setMinimumSize(new Dimension(width, height + 160));
 		super.setFocusable(false);
 		
 		this.sceneCtrl = new SceneControl();
@@ -82,8 +88,9 @@ public class GameScene extends JPanel implements Scene {
 		Graphics2D graficos = (Graphics2D) g;
 		
 		graficos.setColor(new Color(0, 0, 0));
-		graficos.fillRect(0, 0, width, height);
+		graficos.fillRect(0, 0, super.getWidth(), super.getHeight());
 		dg.render(graficos);
+		renderHUD(graficos);
 	}
 	
 	@Override
@@ -92,7 +99,25 @@ public class GameScene extends JPanel implements Scene {
 		gameCtrl.update();
 		render();
 	}
-
+	
+	private void renderHUD(Graphics2D g) {
+		int life = GameStats.getPlayerLife();
+		int nCoracoes = life / 2;
+		Sprite heart = gameAssets.getSprite("coracao");
+		Sprite player = gameAssets.getSprite(GameStats.getHeroClass() + "1");
+		
+		g.setColor(new Color(255, 255, 255));
+		g.drawLine(0, 640, super.getWidth(), 640);
+		g.drawImage(player.getTexture(), 24, 650, player.getSizeX(), player.getSizeY(), null);
+		for (int i = 0; i < nCoracoes; i++) {
+			g.drawImage(heart.getTexture(),
+					i * heart.getSizeX() + 64, 650,
+					heart.getSizeX(), heart.getSizeY(), null);
+		}
+		
+		score.setText("Points: " + Integer.toString(GameStats.getScore()));
+	}
+	
 	@Override
 	public void render() {
 		repaint();
@@ -172,7 +197,6 @@ public class GameScene extends JPanel implements Scene {
 	public void nextLevel() {
 		currentLevel++;
 		if (currentLevel == levels.length) {
-			System.out.println("AQUI");
 			sceneMan.setCurrent("GameOver");
 			return;
 		}
@@ -195,6 +219,13 @@ public class GameScene extends JPanel implements Scene {
 		IPathfinder pathFinder = new AStar();
 		dg.connectPathfinder(pathFinder);
 		gameCtrl.setDungeon(dg);
+		
+		// Display da Pontuacao
+		score = new JLabel("Points: " + Integer.toString(GameStats.getScore()));
+		score.setBounds(64, 670, 100, 30);
+		score.setForeground(new Color (255, 255, 255));
+		score.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+		add(score);
 	}
 	
 	

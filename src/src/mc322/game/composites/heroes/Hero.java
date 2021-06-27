@@ -11,15 +11,24 @@ import mc322.game.util.GameStats;
 
 public abstract class Hero extends DynamicEntity implements IHero {
 	protected Movement heroMovement;
+	protected HeroControler heroCtrl; 
 	
 	protected Hero() {
 		setSolida(false);
 		setType("Hero");
-		setCurrentAnim("idle");
+		setState("idle");
 	}
 	
-	public void setMovement(Movement heroMovement) {
+	public void connectMovement(Movement heroMovement) {
 		this.heroMovement = heroMovement;
+	}
+	
+	public void connectControler(HeroControler heroCtrl) {
+		this.heroCtrl = heroCtrl;
+	}
+	
+	public boolean isAlive() {
+		return life > 0;
 	}
 	
 	public void updateLife(int n) {
@@ -28,7 +37,7 @@ public abstract class Hero extends DynamicEntity implements IHero {
 	}
 	
 	public void render(Graphics2D g) {
-		Sprite text = animations.get(currentAnim).getCurrentFrame();
+		Sprite text = animations.get(state).getCurrentFrame();
 		int fatorX = 0, fatorY = 0;
 		
 		if (text.getSizeX() > 32)
@@ -36,42 +45,45 @@ public abstract class Hero extends DynamicEntity implements IHero {
 		if (text.getSizeY() > 32)
 			fatorY = text.getSizeY() - 32;
 		
-		g.drawImage(text.getTexture(), x * 32 - fatorX, y * 32 - fatorY, text.getSizeX(), text.getSizeY(), null);
+		g.drawImage(text.getTexture(),
+				x * 32 - fatorX, y * 32 - fatorY,
+				text.getSizeX(), text.getSizeY(), null);
 	}
 	
-	private void passTurn() {
+	public void passTurn() {
+		setState("idle");
 		root.requestNextTurn();
 		resetPath();
 		setAttacking(false);
-		setCurrentAnim("idle");
 	}
 	
 	public void update() {
-		animations.get(currentAnim).tick();
+		animations.get(state).tick();
 		
-		if (this.isAttacking) {
-//			this.animAtk.tick();
-			if (animations.get(currentAnim).finishedLoop()) {
-				passTurn();
-			}
-		}
-		
-		if (!root.isPlayerTurn()) {
-			resetPath();
-			return;
-		}
-		
-		if (knowsPath() && isInRange()) {
-			ticks++;
-			root.toggleUpdating(true);
-			nextPosition();
-		}
-		
-		if (n == this.range)
-			passTurn();
-		
-		if (caminho != null && n == caminho.size()) {
-			passTurn();
+		switch (state) {
+			case "idle":
+			case "movement":
+				if (knowsPath() && isInRange()) {
+					ticks++;
+					root.toggleUpdating(true); // FIX
+					nextPosition();
+				}
+				
+				if (n == this.range)
+					heroCtrl.finishedAction();
+				
+				if (caminho != null && n == caminho.size()) {
+					heroCtrl.finishedAction();
+				}
+				
+				break;
+			case "atk":
+				if (animations.get(state).finishedLoop()) {
+					heroCtrl.finishedAction();
+				}
+				break;
+			default:
+				break;
 		}
 	}
 	
@@ -82,6 +94,7 @@ public abstract class Hero extends DynamicEntity implements IHero {
 	public void receiveMovement(int[] target) {
 		// heroMovement.move(target, this);
 		askForPath(target);
+		setState("idle");
 	}
 	
 	protected void askForPath(int pos[]) {
@@ -100,12 +113,10 @@ public abstract class Hero extends DynamicEntity implements IHero {
 		
 		int[] playerPos = getPosition();
 		lookInDirection(playerPos[0], target[0]);
-		System.out.println("Atacando X: " + target[0] + " Y: " + target[1]);
-		setAttacking(true);
-		setCurrentAnim("atk");
-		root.handleAttack(this, target);
-		resetPath();
 		
+		System.out.println("Atacando X: " + target[0] + " Y: " + target[1]);
+		setState("atk");
+		root.handleAttack(this, target);
 	}
 	
 	private void flipFrames(boolean value) {

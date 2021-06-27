@@ -3,7 +3,6 @@ package mc322.game.composites.dungeon;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-import mc322.game.composites.Cell;
 import mc322.game.composites.IEntity;
 import mc322.game.composites.StaticEntity;
 import mc322.game.composites.dungeon.exceptions.DungeonException;
@@ -37,8 +36,8 @@ public class Dungeon extends StaticEntity implements IDungeon {
 	}
 	
 	public void setSize(int x, int y) {
-		this.x = x; // Posicao nao eh necessaria na caverna ent podemos usar x e y
-		this.y = y; // Mas x e y se referem a posicao da entidade
+		this.x = x;
+		this.y = y;
 		this.tiles = new IEntity[y][x];
 	}
 	
@@ -96,7 +95,6 @@ public class Dungeon extends StaticEntity implements IDungeon {
 	
 	public void moveEntity(IEntity ent, int[] target) throws DungeonException {
 		int[] source = ent.getPosition();
-		// FIX-ME: CAST NAO DEVE SER FEITO - add QueueRemoval a Entity
 		IEntity sourceTile = getTile(source[0], source[1]);
 		IEntity targetTile = getTile(target[0], target[1]);
 		
@@ -130,7 +128,7 @@ public class Dungeon extends StaticEntity implements IDungeon {
 	}
 
 	@Override
-	public void removeEntity(IEntity ent) { // FIX-ME: CAST NAO DEVE SER FEITO
+	public void removeEntity(IEntity ent) {
 		int pos[] = ent.getPosition();
 		IEntity cell = getTile(pos[0], pos[1]);
 		cell.removeEntity(ent);
@@ -153,6 +151,7 @@ public class Dungeon extends StaticEntity implements IDungeon {
 	@Override
 	public void update() {
 		toggleUpdating(false);
+		
 		for (int posY = 0; posY < y; posY++) {
 			for (int posX = 0; posX < x; posX++) {
 				getTile(posX, posY).update();
@@ -168,10 +167,6 @@ public class Dungeon extends StaticEntity implements IDungeon {
 	
 	public void handleAttack(IEntity attacker, int[] target) {
 		IEntity targetTile = getTile(target[0], target[1]);
-		
-//		if (targetTile.isSolid())
-//			throw new InvalidMovement("Movimento para tile solido nao eh valido");
-		
 		targetTile.updateLife(-attacker.getDamage());
 		this.entitiesUpdating = true;
 	}

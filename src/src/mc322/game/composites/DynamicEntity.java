@@ -2,8 +2,6 @@ package mc322.game.composites;
 
 import java.util.ArrayList;
 
-import mc322.game.composites.dungeon.IDungeon;
-
 public abstract class DynamicEntity extends StaticEntity {
 	protected int life, attack, range;
 	protected int ticks, n, minimunDistance;
@@ -49,8 +47,8 @@ public abstract class DynamicEntity extends StaticEntity {
 		if (ticks % 40 != 0) {
 			return;
 		}
+		
 		ticks = 0;
-			
 		int target[];
 		
 		target = caminho.get(n);
@@ -59,13 +57,9 @@ public abstract class DynamicEntity extends StaticEntity {
 	}
 	
 	protected void askForPath(int pos[]) {
-		try {
-			this.caminho = root.findPath(getPosition(), pos);
-			if (caminho == null || n >= range)
-				return;
-			root.toggleUpdating(true);
-		} catch (Exception e) { // FIX-ME: Fazer excecoess
+		this.caminho = root.findPath(getPosition(), pos);
+		if (caminho == null || n >= range)
 			return;
-		}
+		root.toggleUpdating(true);
 	}
 }

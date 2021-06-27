@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import mc322.game.composites.IEntity;
 import mc322.game.composites.GameControler;
 import mc322.game.composites.dungeon.IDungeon;
+import mc322.game.composites.enemies.EnemiesControler;
+import mc322.game.composites.enemies.Enemy;
+import mc322.game.composites.heroes.HeroControler;
 import mc322.game.composites.heroes.IHero;
 import mc322.game.composites.items.Item;
 import mc322.game.factory.CellBuilder;
@@ -39,6 +42,8 @@ public class GameScene extends JPanel implements Scene {
 	private SceneControl sceneCtrl;
 	private IDungeon dg;
 	private GameControler gameCtrl;
+	private HeroControler heroCtrl;
+	// private EnemiesControler enemiesCtrl;
 	private Assets gameAssets;
 	private int currentLevel = 0;
 	private boolean initialized = false;
@@ -68,6 +73,9 @@ public class GameScene extends JPanel implements Scene {
 		
 		this.gameCtrl = new GameControler();
 		gameCtrl.game = this;
+		this.heroCtrl = new HeroControler();
+		// this.enemiesCtrl = new EnemiesControler();
+		gameCtrl.connectHeroControler(heroCtrl);
 	}
 	
 	public boolean isInitialized() {
@@ -75,8 +83,8 @@ public class GameScene extends JPanel implements Scene {
 	}
 	
 	public void connectInputSource(KeyManager key, MouseManager mouse) {
-		gameCtrl.connectKeyInputSource(key);
-		gameCtrl.connectMouseInputSource(mouse);
+		heroCtrl.connectKeyInputSource(key);
+		heroCtrl.connectMouseInputSource(mouse);
 	}
 	
 	public void connectAssets(Assets gameAssets) {
@@ -108,13 +116,18 @@ public class GameScene extends JPanel implements Scene {
 		
 		g.setColor(new Color(255, 255, 255));
 		g.drawLine(0, 640, super.getWidth(), 640);
+		
+		// Desenha Jogador
 		g.drawImage(player.getTexture(), 24, 650, player.getSizeX(), player.getSizeY(), null);
+		
+		// Desenha Numero de Vidas
 		for (int i = 0; i < nCoracoes; i++) {
 			g.drawImage(heart.getTexture(),
 					i * heart.getSizeX() + 64, 650,
 					heart.getSizeX(), heart.getSizeY(), null);
 		}
 		
+		// Atualiza Pontuacao
 		score.setText("Points: " + Integer.toString(GameStats.getScore()));
 	}
 	
@@ -166,15 +179,10 @@ public class GameScene extends JPanel implements Scene {
 				System.out.println("Criando Jogador: " + GameStats.getHeroClass());
 				ent = HeroBuilder.buildHero(gameAssets, GameStats.getHeroClass());
 				dg.setJogador(ent);
-				gameCtrl.setJogador((IHero) ent);
+				heroCtrl.connectJogador((IHero) ent);
 			}
 			
-			if (HeroBuilder.isHero(name)) {
-				System.out.println("Criando Jogador");
-				ent = HeroBuilder.buildHero(gameAssets, name);
-				dg.setJogador(ent);
-				gameCtrl.setJogador((IHero) ent); // FIX
-			} else if (EnemyBuilder.isEnemy(name)) {
+			if (EnemyBuilder.isEnemy(name)) {
 				ent = EnemyBuilder.buildEnemy(gameAssets, name);
 			} else if (ItemBuilder.isItem(name)){
 				Item item = ItemBuilder.buildItem(gameAssets, name);
@@ -197,7 +205,7 @@ public class GameScene extends JPanel implements Scene {
 	public void nextLevel() {
 		currentLevel++;
 		if (currentLevel == levels.length) {
-			sceneMan.setCurrent("GameOver");
+			sceneMan.setCurrent("Victory");
 			return;
 		}
 		loadLevel();

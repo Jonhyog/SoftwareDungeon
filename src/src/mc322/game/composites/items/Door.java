@@ -32,6 +32,6 @@ public class Door extends Item {
 	
 	public void actionPerformed() {	
 		setSolida(!solid);
-		setCurrentAnim("aberta");
+		setState("aberta");
 	}
 }

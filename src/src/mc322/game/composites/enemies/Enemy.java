@@ -16,7 +16,7 @@ public abstract class Enemy extends DynamicEntity {
 	protected Enemy() {
 		setSolida(false);
 		setType("Enemy");
-		setCurrentAnim("idle");
+		setState("idle");
 		this.ticks = 0;
 		this.n = 0;
 		this.minimunDistance = 1;
@@ -49,16 +49,8 @@ public abstract class Enemy extends DynamicEntity {
 		return range * 3 >= caminho.size();
 	}
 	
-//	protected void askForPath(int pos[]) {
-//		super.askForPath(pos);
-//		if (caminho != null && !isReachable()) {
-//			caminho = null;
-//			System.out.println("Nao alcanco essa posicao");
-//		}
-//	}
-	
 	public void render(Graphics2D g) {
-		Sprite text = animations.get(currentAnim).getCurrentFrame();
+		Sprite text = animations.get(state).getCurrentFrame();
 		int fatorX = 0, fatorY = 0;
 		
 		if (text.getSizeX() > 32)
@@ -70,7 +62,7 @@ public abstract class Enemy extends DynamicEntity {
 	}
 	
 	public void update() {
-		animations.get(currentAnim).tick();
+		animations.get(state).tick();
 		
 		if (!isAlive()) {
 			root.removeEntity(this);
@@ -79,9 +71,9 @@ public abstract class Enemy extends DynamicEntity {
 		}
 		
 		if (this.isAttacking) {
-			if (animations.get(currentAnim).finishedLoop()) {
+			if (animations.get(state).finishedLoop()) {
 				setAttacking(false);
-				setCurrentAnim("idle");
+				setState("idle");
 			}
 			root.toggleUpdating(true);
 			return;
@@ -114,7 +106,7 @@ public abstract class Enemy extends DynamicEntity {
 			attack(target);
 			this.attacked = true;
 			setAttacking(true);
-			setCurrentAnim("atk");
+			setState("atk");
 			root.toggleUpdating(true);
 		} else {
 			askForPath(root.getPlayerPosition());

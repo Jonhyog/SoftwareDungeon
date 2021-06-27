@@ -14,7 +14,7 @@ public abstract class Item extends StaticEntity implements ISubject, IObject {
 	protected Item(Sprite texture) {
 		setTexture(texture);
 		setType("Item");
-		setCurrentAnim("idle");
+		setState("idle");
 		observers = new ArrayList<IObject>();
 	}
 	
@@ -35,7 +35,7 @@ public abstract class Item extends StaticEntity implements ISubject, IObject {
 	}
 	
 	public void render(Graphics2D g) {
-		Sprite text = animations.get(currentAnim).getCurrentFrame();
+		Sprite text = animations.get(state).getCurrentFrame();
 		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
 	}
 	

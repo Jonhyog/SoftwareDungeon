@@ -14,7 +14,7 @@ public class Cell extends StaticEntity {
 		this.entitys = new ArrayList<IEntity>();
 		this.removeStack = new Stack<IEntity>();
 		setType("Cell");
-		setCurrentAnim("idle");
+		setState("idle");
 	}
 	
 	public Cell(Sprite texture, boolean solida) {
@@ -23,7 +23,7 @@ public class Cell extends StaticEntity {
 		this.texture = texture;
 		setSolida(solida);
 		setType("Cell");
-		setCurrentAnim("idle");
+		setState("idle");
 	}
 	
 	public void setPosition(int x, int y) {
@@ -44,10 +44,11 @@ public class Cell extends StaticEntity {
 	
 	public void moveEntity(IEntity ent, int[] target){
 		root.moveEntity(ent, target);
-		removeStack.add(ent); // Remocao nao pode ocorrer durante iteracao 
+		queueRemoval(ent);
 	}
 	
 	private void queueRemoval(IEntity ent) {
+		// Remocao nao pode ocorrer durante iteracao entao eh enfileirada 
 		removeStack.add(ent);
 	}
 	
@@ -72,7 +73,7 @@ public class Cell extends StaticEntity {
 
 	@Override
 	public void render(Graphics2D g) {
-		Sprite text = animations.get(currentAnim).getCurrentFrame();
+		Sprite text = animations.get(state).getCurrentFrame();
 		g.drawImage(text.getTexture(), x * 32, y * 32, text.getSizeX(), text.getSizeY(), null);
 		
 		for (IEntity ent : entitys) {

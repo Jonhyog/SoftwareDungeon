@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import mc322.game.composites.IEntity;
 import mc322.game.util.IPathfinder;
 
-public interface IDungeon extends IEntity{
+public interface IDungeon extends IEntity {
 	public void connectPathfinder(IPathfinder pathFinder);
 	public void moveEntity(IEntity ent, int[] target);
 	public int[] getPlayerPosition();

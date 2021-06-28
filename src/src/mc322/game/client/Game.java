@@ -15,6 +15,7 @@ import mc322.game.scenes.MenuScene;
 import mc322.game.scenes.Scene;
 import mc322.game.scenes.SelectionScene;
 import mc322.game.scenes.VictoryScene;
+import mc322.game.scenes.sceneManager.ISceneManager;
 import mc322.game.scenes.sceneManager.SceneManager;
 import mc322.game.util.Clock;
 
@@ -32,7 +33,7 @@ public class Game {
 	
 	private Assets gameAssets;
 	
-	private SceneManager sceneMan;
+	private ISceneManager sceneMan;
 	
 	public Game(String title, int width, int height) {
 		this.title = title;

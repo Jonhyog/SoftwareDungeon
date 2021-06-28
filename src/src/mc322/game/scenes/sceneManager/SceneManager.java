@@ -11,7 +11,7 @@ import mc322.game.scenes.Scene;
 import mc322.game.scenes.sceneManager.exceptions.SceneManagerException;
 import mc322.game.scenes.sceneManager.exceptions.SceneNotFound;
 
-public class SceneManager {
+public class SceneManager implements ISceneManager {
 	private Scene currentScene;
 	private String currentName;
 	private GameWindow main;

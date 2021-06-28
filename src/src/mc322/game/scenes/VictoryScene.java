@@ -13,12 +13,13 @@ import javax.swing.JPanel;
 import mc322.game.gfx.Assets;
 import mc322.game.input.KeyManager;
 import mc322.game.input.MouseManager;
+import mc322.game.scenes.sceneManager.ISceneManager;
 import mc322.game.scenes.sceneManager.SceneManager;
 import mc322.game.util.GameStats;
 import mc322.game.util.loaders.ImageLoader;
 
 public class VictoryScene extends JPanel implements Scene {
-	private SceneManager sceneMan;
+	private ISceneManager sceneMan;
 	private int width, height;
 	private Assets gameAssets;
 	private boolean initialized = false;

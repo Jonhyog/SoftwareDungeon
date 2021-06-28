@@ -11,5 +11,6 @@ public interface IEntityProperties {
 	public int[] getPosition();
 	public int getDamage();
 	public boolean isSolid();
+	public int getLife();
 	public String getType();
 }

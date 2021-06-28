@@ -6,9 +6,9 @@ public class Virus extends Enemy {
 	
 	public Virus() {
 		super();
-		this.life = 10;
-		this.attack = 2;
-		this.range = 3;
+		this.life = 12;
+		this.attack = 4;
+		this.range = 2;
 	}
 	
 	@Override

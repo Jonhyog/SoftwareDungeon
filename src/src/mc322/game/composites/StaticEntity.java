@@ -8,6 +8,7 @@ import mc322.game.gfx.Sprite;
 
 public abstract class StaticEntity implements IEntity {
 	protected int x, y;
+	protected int life;
 	protected IDungeon root;
 	protected Sprite texture;
 	protected Hashtable<String, IAnimation> animations = null; // FIX
@@ -17,6 +18,10 @@ public abstract class StaticEntity implements IEntity {
 	
 	public void setTexture(Sprite texture) {
 		this.texture = texture;
+	}
+	
+	public int getLife() {
+		return this.life;
 	}
 	
 	public void connectAnimation(String name, IAnimation anim) {

@@ -7,9 +7,9 @@ import mc322.game.composites.IEntity;
 public class Tecnico extends Hero implements IHero {
 	public Tecnico() {
 		super();
-		this.life = 10;
-		this.attack = 2;
-		this.range = 2;
+		this.life = 22;
+		this.attack = 4;
+		this.range = 4;
 	}
 	
 	@Override

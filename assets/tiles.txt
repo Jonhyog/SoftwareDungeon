@@ -40,7 +40,7 @@ virus3 224 160 239 175 38 true
 erro1 160 192 175 207 39 true
 erro2 192 192 207 207 40 true
 erro3 224 192 239 207 41 true
-cafe 160 64 175 79 28 42 false
+cadeado 160 64 175 79 28 42 false
 coracao 176 64 191 79 29 43 false
 chave 192 64 207 79 30 44 false
 cursor 224 16 239 31 31 45 false
@@ -49,3 +49,27 @@ lInvertidoDiretio 80 48 95 63 47 true
 cEsquerdo 64 80 79 95 48 true
 cDireito 80 80 95 95 49 true
 fill 32 48 47 63 50 true
+cafe1 160 80 175 95 51 false
+cafe2 176 80 191 95 52 false
+cafe3 192 80 207 95 53 false
+hackerAtk1 160 221 175 239 54 false
+hackerAtk2 192 212 218 239 55 false
+hackerAtk3 224 221 247 239 56 false
+estagiarioAtk1 160 252 175 271 57 false
+estagiarioAtk2 192 244 218 271 58 false
+estagiarioAtk3 224 251 247 271 59 false
+tecnicoAtk1 160 283 175 303 60 false
+tecnicoAtk2 192 275 218 303 61 false
+tecnicoAtk3 224 282 247 303 62 false
+engenheiroAtk1 160 314 175 335 63 false
+engenheiroAtk2 192 306 218 335 64 false
+engenheiroAtk3 224 313 247 335 65 false
+bugAtk1 16 256 36 271 66 false
+bugAtk2 48 256 72 271 67 false
+bugAtk3 80 255 102 271 68 false
+virusAtk1 16 288 36 303 69 false
+virusAtk2 48 288 72 303 70 false
+virusAtk3 80 288 102 303 71 false
+erroAtk1 16 320 36 335 72 false
+erroAtk2 48 320 72 335 73 false
+erroAtk3 80 320 102 335 74 false

@@ -128,8 +128,8 @@ Dessa forma, concluímos o projeto com um resultado satisfatório e novos aprend
 ## Diagramas
 ### Diagrama Geral do Projeto
 ![ArquiteturaJogo](diagramas/SoftwareDungeonUML.svg)
-Para o desenvolvimento do projeto nos fundamentamos no padrão.
-Além disso, também utilizamos o padrão observer para algumas coisas (abrir portas)
+
+Para o desenvolvimento do projeto nos fundamentamos no padrão de composites. O Componente game interege com uma Janela e com um `SceneManager` de tal forma que solicita ao último a renderiação da `Scene` atual no display. Uma `Scene` agrupa os componentes visuais para renderização, tais quais `JButton`, `JPanel` e etc. Além disso, esta também apresenta uma estrutura de controle para gerenciar os eventos que nela ocorrem. Vale ainda mencionar a `GameScene`, a `Scene` principal. Nela encontram-se a `Dungeon` e os outros composites que são gerenciados pelo controlador e atualizados a cada ciclo do *Game Loop*.
 
 ### Diagrama Geral de Componentes
 ![Componentes](diagramas/Componentes/CompositesDiagram.svg)

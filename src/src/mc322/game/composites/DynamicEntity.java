@@ -3,7 +3,7 @@ package mc322.game.composites;
 import java.util.ArrayList;
 
 public abstract class DynamicEntity extends StaticEntity {
-	protected int life, attack, range;
+	protected int attack, range;
 	protected int ticks, n, minimunDistance;
 	protected ArrayList<int[]> caminho = null;
 

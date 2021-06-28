@@ -9,6 +9,10 @@ public class GameStats {
 		GameStats.heroClass = heroClass;
 	}
 	
+	public static void setLife(int n) {
+		GameStats.playerLife = n;
+	}
+	
 	public static void resetScore() {
 		GameStats.score = 0;
 	}

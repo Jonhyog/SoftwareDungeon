@@ -1,7 +1,6 @@
 package mc322.game.composites;
 
 import mc322.game.composites.dungeon.IDungeon;
-import mc322.game.composites.enemies.EnemiesControler;
 import mc322.game.composites.heroes.HeroControler;
 import mc322.game.scenes.GameScene;
 import mc322.game.scenes.sceneManager.SceneManager;
@@ -12,7 +11,6 @@ public class GameControler {
 	public GameScene game;
 	private SceneManager sceneMan = null;
 	private HeroControler heroCtrl;
-	private EnemiesControler enemiesCtrl;
 	
 	public void connectSceneManager(SceneManager sceneMan) {
 		this.sceneMan = sceneMan;
@@ -24,10 +22,6 @@ public class GameControler {
 	
 	public void connectHeroControler(HeroControler heroCtrl) {
 		this.heroCtrl = heroCtrl;
-	}
-	
-	public void connectEnemiesControler(EnemiesControler enemiesCtrl) {
-		this.enemiesCtrl = enemiesCtrl;
 	}
 	
 	public void update() {

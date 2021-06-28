@@ -6,9 +6,9 @@ public class Erro extends Enemy {
 	
 	public Erro() {
 		super();
-		this.life = 10;
-		this.attack = 2;
-		this.range = 3;
+		this.life = 14;
+		this.attack = 4;
+		this.range = 2;
 	}
 	
 	@Override

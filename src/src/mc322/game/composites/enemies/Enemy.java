@@ -66,7 +66,7 @@ public abstract class Enemy extends DynamicEntity {
 		
 		if (!isAlive()) {
 			root.removeEntity(this);
-			GameStats.increaseScore(life);
+			GameStats.increaseScore(10);
 			return;
 		}
 		

@@ -7,9 +7,9 @@ import mc322.game.composites.IEntity;
 public class Estagiario extends Hero implements IHero {
 	public Estagiario() {
 		super();
-		this.life = 10;
+		this.life = 18;
 		this.attack = 2;
-		this.range = 2;
+		this.range = 6;
 	}
 	
 	@Override

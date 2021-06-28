@@ -13,8 +13,6 @@ import javax.swing.JPanel;
 import mc322.game.composites.IEntity;
 import mc322.game.composites.GameControler;
 import mc322.game.composites.dungeon.IDungeon;
-import mc322.game.composites.enemies.EnemiesControler;
-import mc322.game.composites.enemies.Enemy;
 import mc322.game.composites.heroes.HeroControler;
 import mc322.game.composites.heroes.IHero;
 import mc322.game.composites.items.Item;
@@ -43,7 +41,6 @@ public class GameScene extends JPanel implements Scene {
 	private IDungeon dg;
 	private GameControler gameCtrl;
 	private HeroControler heroCtrl;
-	// private EnemiesControler enemiesCtrl;
 	private Assets gameAssets;
 	private int currentLevel = 0;
 	private boolean initialized = false;
@@ -74,7 +71,6 @@ public class GameScene extends JPanel implements Scene {
 		this.gameCtrl = new GameControler();
 		gameCtrl.game = this;
 		this.heroCtrl = new HeroControler();
-		// this.enemiesCtrl = new EnemiesControler();
 		gameCtrl.connectHeroControler(heroCtrl);
 	}
 	
@@ -110,7 +106,7 @@ public class GameScene extends JPanel implements Scene {
 	
 	private void renderHUD(Graphics2D g) {
 		int life = GameStats.getPlayerLife();
-		int nCoracoes = life / 2;
+		int nCoracoes = life / 4;
 		Sprite heart = gameAssets.getSprite("coracao");
 		Sprite player = gameAssets.getSprite(GameStats.getHeroClass() + "1");
 		
@@ -178,6 +174,7 @@ public class GameScene extends JPanel implements Scene {
 			if (name.equals("hero")) {
 				System.out.println("Criando Jogador: " + GameStats.getHeroClass());
 				ent = HeroBuilder.buildHero(gameAssets, GameStats.getHeroClass());
+				GameStats.setLife(ent.getLife());
 				dg.setJogador(ent);
 				heroCtrl.connectJogador((IHero) ent);
 			}

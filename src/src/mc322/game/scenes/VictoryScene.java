@@ -53,10 +53,10 @@ public class VictoryScene extends JPanel implements Scene {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D graficos = (Graphics2D) g;
-//		BufferedImage img = ImageLoader.loadImage("res/textures/telaInicial.png");
+		BufferedImage img = ImageLoader.loadImage("res/textures/trofeu.png");
 		
-		graficos.fillRect(0, 0, 640, 640);
-//		g.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
+		graficos.fillRect(0, 0, width, height);
+		g.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
 			
 	}
 	
@@ -78,15 +78,15 @@ public class VictoryScene extends JPanel implements Scene {
 
 	@Override
 	public void initScene() {
-		JLabel victory = new JLabel("Vitória!");
-		JLabel score = new JLabel("Pontuação: " + GameStats.getScore());
+		JLabel victory = new JLabel("Vitoria!");
+		JLabel score = new JLabel("Pontuacao: " + GameStats.getScore());
 		
-		victory.setBounds(width/2 - 50, height/2 - 50, 100, 50);
+		victory.setBounds(width/2 - 50, height/2 - 200, 100, 50);
 		victory.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-		victory.setForeground(new Color (255, 255, 255));
-		score.setBounds(width/2 - 50, height/2 + 50, 250, 50);
+		victory.setForeground(new Color (255, 0, 0));
+		score.setBounds(width/2 - 50, height/2 - 100, 250, 50);
 		score.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-		score.setForeground(new Color (255, 255, 255));
+		score.setForeground(new Color (255, 0, 0));
 		super.add(victory);
 		super.add(score);
 		
